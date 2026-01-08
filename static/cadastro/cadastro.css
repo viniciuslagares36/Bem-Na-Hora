@@ -1,0 +1,1376 @@
+/* Importação da fonte */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+/* Reset Básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Cores utilizadas na página */
+:root {
+    --azul-principal: #00A7E1;
+    --preto: #00171F;
+    --turques: #003459;
+    --azul-escuro: #007EA7;
+    --branco: #FFFFFF;
+
+    --background: #d8e6f0;
+
+    --text-main: var(--preto);
+    --text-secondary: var(--azul-escuro);
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #F7FAFC;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+body {
+    background-image: url(../img/background.png);
+    /* URL da imagem escolhida */
+    background-repeat: no-repeat;
+    /* Para não repetir a imagem */
+    background-size: cover;
+    /* Para a imagem cobrir toda a área */
+}
+
+.secao {
+    background-image:
+        linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+        url('sua-imagem.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* HEADER GLOBAL (Cópia Exata da Tela de Cadastro) */
+.header {
+    background-color: #ffffff;
+    height: 90px;
+    display: flex;
+    /* Adicionado: Borda arredondada igual ao login */
+    border-bottom: 1px solid #00171f31;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    /* Sombra ajustada */
+    justify-content: space-between;
+    padding: 0 50px;
+
+    /* OBS: Removi 'position: sticky' para ficar IDÊNTICO ao login. 
+       Se precisar que o menu acompanhe a rolagem, adicione 'position: sticky; top: 0; z-index: 1000;' de volta. */
+}
+
+.logo img {
+    height: 80px;
+    width: auto;
+    /* padding: 15px 0; (Opcional, se a logo estiver colada demais) */
+}
+
+.nav {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.nav a {
+    justify-content: center;
+    width: 140px;
+    height: 90px;
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+    transition: background-color 0.3s, color 0.3s;
+    text-decoration: none;
+    color: var(--text-main);
+    /* Garante a cor base */
+}
+
+/* Estilos Específicos dos Botões (Cores e Hover) */
+.nav-button1 {
+    background-color: transparent;
+    text-align: center;
+    border-bottom: 4px solid var(--azul-principal);
+}
+
+.nav-button1:hover {
+    background-color: var(--azul-principal);
+    color: var(--branco);
+}
+
+.nav-button2 {
+    background-color: transparent;
+    text-align: center;
+    border-bottom: 4px solid var(--azul-escuro);
+}
+
+.nav-button2:hover {
+    background-color: var(--azul-escuro);
+    color: var(--branco);
+}
+
+.nav-button3 {
+    background-color: transparent;
+    text-align: center;
+    border-bottom: 4px solid var(--turques);
+}
+
+.nav-button3:hover {
+    background-color: var(--turques);
+    color: var(--branco);
+}
+
+
+/* CORREÇÃO CRÍTICA DE CENTRALIZAÇÃO */
+.header-spacer {
+    width: 200px;
+    /* Aumentado de 150px para 200px para equilibrar com a logo */
+    flex-shrink: 0;
+}
+
+/* --- 2. ESTILO DO CONTAINER PRINCIPAL E CARD --- */
+
+.main-container {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.card {
+    display: flex;
+    /* Transição aplicada ao 'card' para a animação */
+    transition: transform 0.6s ease-in-out;
+    width: 1000px;
+    min-height: 700px;
+    background-color: #ffffff;
+    border-radius: 40px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 30, 95, 0.712);
+}
+
+/* Container que envolve os formulários (Login e Cadastro) */
+.form-container {
+    width: 75%;
+    /* Começa com 75% para o Login, deixando 25% para a royal */
+    transition: width 0.6s ease-in-out;
+    display: flex;
+    position: relative;
+}
+
+.form {
+    width: 100%;
+    padding: 50px 60px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.3s ease-in-out;
+}
+
+/* --- Transição de Modo: CADASTRO --- */
+
+/* Quando o modo de cadastro está ativo, inverte a ordem das seções e muda o tamanho */
+.sign-up-mode .register-royal {
+    order: -1;
+    /* Move a seção roxa para a esquerda */
+}
+
+.sign-up-mode .form-container {
+    width: 75%;
+    /* O formulário de Cadastro usará mais espaço */
+}
+
+.sign-up-mode .register-royal {
+    width: 40%;
+    /* A seção roxa ficará menor */
+}
+
+/* --- ESTILO DE CAMPOS E BOTÕES GERAIS --- */
+
+.title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #007ea7;
+    margin-bottom: 25px;
+}
+
+.separator {
+    font-size: 0.9rem;
+    color: #003459;
+    margin-bottom: 20px;
+    width: 100%;
+    text-align: center;
+}
+
+.separator.top-space {
+    margin-top: 25px;
+}
+
+.main-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.main-form input,
+.main-form select {
+    width: 100%;
+    padding: 12px 20px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    font-size: 1rem;
+    background-color: #f7f7f7;
+    outline-color: #007ea7;
+    appearance: none;
+    /* Para customizar o select */
+}
+
+.forgot-password {
+    align-self: flex-start;
+    font-size: 0.9rem;
+    color: #888;
+    margin-bottom: 30px;
+    transition: color 0.2s;
+}
+
+.forgot-password:hover {
+    color: #007ea7;
+}
+
+.btn-submit {
+    width: 150px;
+    padding: 12px;
+    background-color: #007ea7;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
+    box-shadow: 0 5px 15px rgba(47, 152, 201, 0.3);
+}
+
+.btn-submit:hover {
+    background-color: #003459;
+    transform: translateY(-2px);
+}
+
+/* --- ESTILO DA SEÇÃO DE CADASTRO (Novo layout em grid) --- */
+
+.register-section {
+    position: absolute;
+    /* Permite a sobreposição */
+    left: 0;
+    top: 0;
+    opacity: 1;
+    z-index: 10;
+    height: 100%;
+    width: 100%;
+    padding: 30px 60px;
+    /* Reduzido um pouco o padding para caber mais campos */
+    overflow-y: auto;
+    /* Permite scroll se não couber tudo */
+}
+
+.register-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px 20px;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.register-grid>input,
+.register-grid>select {
+    margin-bottom: 0;
+    /* Remove a margem inferior para o grid controlar o espaçamento */
+}
+
+/* Campos de largura total */
+.register-grid input[type="text"]:first-child,
+/* Nome Completo */
+.register-grid input[type="email"],
+/* Email */
+.register-grid input[type="password"],
+/* Senha */
+.terms-checkbox,
+.register-submit {
+    grid-column: span 2;
+}
+
+.terms-checkbox {
+    display: flex;
+    align-items: center;
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 5px;
+}
+
+.terms-checkbox input[type="checkbox"] {
+    width: 20px !important;
+    /* Força a largura fixa (sobrescreve o 100%) */
+    height: 20px !important;
+    /* Força a altura fixa */
+    min-width: 20px;
+    /* Garante que não diminua */
+    padding: 0 !important;
+    /* Remove o padding de 15px global */
+    margin-right: 10px;
+    margin-bottom: 0;
+    cursor: pointer;
+    border-radius: 4px;
+    /* Opcional: checkboxes geralmente são quadrados ou levemente arredondados */
+    flex-shrink: 0;
+    /* Garante fundo branco se o global for cinza */
+    appearance: none;
+    /* Remove estilo nativo (opcional, se quiser customizar totalmente) */
+    -webkit-appearance: none;
+    /* Compatibilidade Safari/Chrome */
+    border: 1px solid #007ea7;
+    /* Borda para combinar com seu tema */
+}
+
+.terms-checkbox input[type="checkbox"]:checked {
+    background-color: #007ea7;
+    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e");
+}
+
+.terms-link {
+    color: #007ea7;
+    font-weight: 600;
+}
+
+.register-submit {
+    margin-top: 25px;
+    width: 180px;
+}
+
+
+/* --- ESTILO DA SEÇÃO AZUL ROYAL (CORREÇÃO DEFINITIVA) --- */
+
+.register-royal {
+    position: relative;
+    /* OBRIGATÓRIO para os filhos absolutos */
+    width: 50%;
+    background-color: #003459;
+    color: white;
+    border-radius: 0 40px 40px 0;
+    transition: transform 0.6s ease-in-out, width 0.6s ease-in-out;
+    overflow: hidden;
+}
+
+/* AQUI ESTÁ A CORREÇÃO DO "TEXTO EMBAIXO":
+   Ambos os conteúdos (Login e Signup) têm position absolute.
+   Isso faz eles flutuarem um em cima do outro, ocupando o mesmo espaço x/y.
+*/
+.royal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    /* Centraliza perfeitamente */
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 80%;
+    max-width: 400px;
+
+}
+
+.royal-content h3 {
+    font-size: 2.3rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.royal-content p {
+    font-size: 0.95rem;
+    margin-top: 10px;
+    margin-bottom: 30px;
+    line-height: 1.4;
+}
+
+/* BOTÕES */
+.btn-register {
+    padding: 12px 30px;
+    background-color: transparent;
+    color: white;
+    border: 2px solid white;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s;
+    pointer-events: auto;
+    /* Garante que o botão funcione */
+    z-index: 10;
+}
+
+.btn-register:hover {
+    background-color: white;
+    color: #007ea7;
+}
+
+
+/* ==========================================================================
+   ANIMAÇÃO PERSONALIZADA: SAÍDA ESTÁTICA / ENTRADA SUBINDO
+   ========================================================================== */
+
+/* 1. Definindo as Animações (O "Como" se move) */
+
+/* Animação para QUEM SAI: Fica parado no centro e só some */
+@keyframes sair-parado {
+    0% {
+        transform: translate(-50%, -50%);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translate(-50%, -50%);
+        /* Não move nem um pixel */
+        opacity: 0;
+    }
+}
+
+/* Animação para QUEM ENTRA: Começa um pouco abaixo e sobe ao centro */
+@keyframes entrar-subindo {
+    0% {
+        transform: translate(-50%, 0%);
+        /* Começa deslocado para baixo */
+        opacity: 0;
+    }
+
+    100% {
+        transform: translate(-50%, -50%);
+        /* Termina no centro perfeito */
+        opacity: 1;
+    }
+}
+
+/* 2. Configuração Base (Posicionamento) */
+.royal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    max-width: 400px;
+    text-align: center;
+    /* IMPORTANTE: Nenhuma transition aqui! */
+}
+
+/* 3. Aplicando as Regras (O "Quando" acontece) */
+
+/* --- ESTADO INICIAL (Carregamento da Página) --- */
+/* Sem a classe .animating, tudo fica estático e no lugar certo */
+
+.royal-login {
+    opacity: 1;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+}
+
+.royal-signup {
+    opacity: 0;
+    transform: translate(-50%, -50%);
+    /* Fica no centro, invisível */
+    z-index: 1;
+}
+
+/* --- REGRAS DE ANIMAÇÃO (Só funcionam se tiver a classe .animating) --- */
+
+/* CENÁRIO A: TELA DE LOGIN (Voltando do cadastro) */
+/* Note o .animating no início do seletor */
+.login-box.animating:not(.sign-up-mode) .royal-login {
+    animation: entrar-subindo 0.6s ease-out forwards;
+    animation-delay: 0.3s;
+    pointer-events: auto;
+    opacity: 0;
+    z-index: 10;
+}
+
+.login-box.animating:not(.sign-up-mode) .royal-signup {
+    animation: sair-parado 0.3s ease-in forwards;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* CENÁRIO B: TELA DE CADASTRO (Indo para o cadastro) */
+
+.sign-up-mode .royal-login {
+    animation: sair-parado 0.3s ease-in forwards;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.sign-up-mode .royal-signup {
+    animation: entrar-subindo 0.6s ease-out forwards;
+    animation-delay: 0.3s;
+    pointer-events: auto;
+    opacity: 0;
+    z-index: 10;
+}
+
+/* Responsividade */
+@media screen and (max-width: 1440px) {
+    .royal-content h3 {
+        font-size: 1.5rem;
+    }
+
+    .royal-content p {
+        font-size: 0.85rem;
+    }
+}
+
+/* Ajuste Responsivo para manter textos menores */
+@media screen and (max-width: 1440px) {
+    .royal-content h3 {
+        font-size: 1.5rem;
+    }
+
+    .royal-content p {
+        font-size: 0.85rem;
+    }
+}
+
+/* Controle de visibilidade via JS */
+.hidden {
+    display: none !important;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.visible {
+    display: flex;
+    /* ou block, dependendo do elemento */
+    opacity: 1;
+}
+
+.form-container .login-section {
+    position: relative;
+    /* Mantém o Login visível por padrão */
+}
+
+.form-container .register-section {
+    opacity: 0;
+    /* Começa oculto */
+}
+
+/* Transição do Formulário */
+.sign-up-mode .form-container .login-section {
+    opacity: 0;
+    display: none;
+}
+
+.sign-up-mode .form-container .register-section {
+    opacity: 1;
+    display: flex;
+}
+
+/* Transição do Conteúdo royalcional */
+.sign-up-mode .royal-login {
+    display: none;
+}
+
+.sign-up-mode .royal-signup {
+    display: block;
+    /* Garante que o conteúdo de signup apareça */
+}
+
+/* ---------- SELECT CUSTOMIZADO ---------- */
+
+.custom-select-wrapper {
+    width: 100%;
+}
+
+.custom-select {
+    width: 100%;
+    padding: 12px 20px;
+    background-color: #f7f7f7;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    font-size: 1rem;
+    cursor: pointer;
+    position: relative;
+    user-select: none;
+}
+
+.custom-select .selected-option {
+    display: block;
+    color: #555;
+}
+
+.custom-options {
+    list-style: none;
+    background: white;
+    padding: 0;
+    margin: 0;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    position: absolute;
+    width: 100%;
+    top: 60px;
+    left: 0;
+    display: none;
+    z-index: 100;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.custom-options li {
+    padding: 12px 15px;
+    cursor: pointer;
+}
+
+/* 🌟 HOVER COLORIDO */
+.custom-options li:hover {
+    background-color: #007ea7;
+    color: white;
+}
+
+/* 🌟 HOVER COLORIDO */
+.custom-options li:hover {
+    background-color: #007ea7;
+    color: white;
+}
+
+/* Animação */
+.custom-select.open .custom-options {
+    display: block;
+}
+
+/* Estilo padrão dos inputs */
+input,
+select {
+    background-color: #f5f5f5;
+    /* mesmo cinza dos outros campos */
+    border: 1px solid #e0e0e0;
+    padding: 15px;
+    border-radius: 6px;
+    font-size: 14px;
+    width: 100%;
+    color: #555;
+}
+
+/* Remover aparência nativa do SELECT (transforma em igual aos inputs) */
+select {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-color: #f5f5f5;
+    background-position: right 10px center;
+    background-repeat: no-repeat;
+    background-size: 12px;
+}
+
+/* Remover estilo nativo do input DATE */
+input[type="date"] {
+    appearance: none;
+    -webkit-appearance: none;
+    background-color: #f5f5f5;
+}
+
+/* Cor do texto da data quando nada foi selecionado */
+input[type="date"]::-webkit-datetime-edit {
+    color: #777;
+}
+
+/* Ícone do calendário (opcional — deixar mais discreto) */
+input[type="date"]::-webkit-calendar-picker-indicator {
+    filter: opacity(0.5);
+}
+
+.custom-options {
+    max-height: 180px;
+    /* altura da caixa do dropdown */
+    overflow-y: auto;
+    /* scroll interno */
+    overflow-x: hidden;
+    padding: 0;
+    margin: 0;
+}
+
+/* Opcional — deixa o scroll bonito */
+.custom-options::-webkit-scrollbar {
+    width: 6px;
+}
+
+.custom-options::-webkit-scrollbar-thumb {
+    background: #b3b3b3;
+    border-radius: 10px;
+}
+
+.custom-options::-webkit-scrollbar-track {
+    background: #f0f0f0;
+}
+
+/* Faz o telefone ocupar as duas colunas do grid */
+.register-grid input[type="tel"] {
+    grid-column: span 2;
+}
+
+input,
+button,
+textarea,
+select {
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Estilo específico para o Input de Data */
+.input-data {
+    /* Ícone de calendário SVG codificado direto no CSS (cor cinza #777) */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%23777' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    /* Posiciona na direita */
+    background-size: 18px;
+    /* Tamanho do ícone */
+    cursor: pointer;
+    /* Mãozinha para indicar que é clicável */
+    padding-right: 40px !important;
+    /* Espaço para o texto não ficar em cima do ícone */
+}
+
+/* Quando o input está focado ou preenchido, deixa o ícone azul (opcional) */
+.input-data:focus {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='%2300A7E1' viewBox='0 0 16 16'%3E%3Cpath d='M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z'/%3E%3C/svg%3E");
+}
+
+/* --- CSS DO MODAL DE TERMOS DE USO --- */
+
+/* Fundo escuro (Overlay) */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 23, 31, 0.7);
+    /* Fundo escuro azulado */
+    z-index: 2000;
+    /* Acima de tudo */
+    display: none;
+    /* Oculto por padrão */
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+/* Classe para mostrar o modal (Via JS) */
+.modal-overlay.show {
+    display: flex;
+    opacity: 1;
+}
+
+/* O Cartão do Modal */
+.modal-card {
+    background-color: #ffffff;
+    width: 450px;
+    /* Mais fino que o card principal */
+    height: 80vh;
+    /* Altura proporcional à tela */
+    max-height: 700px;
+    /* Limite máximo */
+    border-radius: 30px;
+    padding: 40px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+    transform: translateY(20px);
+    transition: transform 0.3s ease;
+}
+
+.modal-overlay.show .modal-card {
+    transform: translateY(0);
+}
+
+/* Título */
+.modal-title {
+    font-size: 1.8rem;
+    color: var(--azul-escuro);
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+/* Corpo com Scroll */
+.modal-body {
+    flex-grow: 1;
+    overflow-y: auto;
+    /* O TEXTO scrola, o modal fica parado */
+    padding-right: 10px;
+    /* Espaço para a barra de rolagem */
+    font-size: 0.9rem;
+    color: #555;
+    line-height: 1.6;
+}
+
+/* Estilizando a barra de rolagem do modal */
+.modal-body::-webkit-scrollbar {
+    width: 6px;
+}
+
+.modal-body::-webkit-scrollbar-thumb {
+    background-color: #ccc;
+    border-radius: 4px;
+}
+
+/* Botão de Fechar (X) */
+.close-modal {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    background: transparent;
+    border: none;
+    font-size: 2rem;
+    color: #999;
+    cursor: pointer;
+    transition: color 0.2s;
+    line-height: 1;
+}
+
+.close-modal:hover {
+    color: var(--azul-principal);
+}
+
+/* =========================================================
+   🚨 ALERTA TOAST (Adicione ao final do cadastro.css)
+   ========================================================= */
+#toast-container {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 999999;
+    /* Bem alto para ficar acima de tudo */
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.toast {
+    display: flex;
+    align-items: center;
+    background-color: #fff;
+    min-width: 300px;
+    max-width: 400px;
+    padding: 15px 20px;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    border-left: 6px solid;
+    transform: translateX(120%);
+    /* Começa fora da tela */
+    transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    font-family: 'Poppins', sans-serif;
+    position: relative;
+    overflow: hidden;
+}
+
+.toast.show {
+    transform: translateX(0);
+    /* Entra na tela */
+}
+
+/* Ícones e Texto */
+.toast-icon {
+    font-size: 1.5rem;
+    margin-right: 15px;
+    display: flex;
+    align-items: center;
+}
+
+.toast-content {
+    flex: 1;
+}
+
+.toast-title {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: #00171F;
+    /* Seu Preto */
+    margin-bottom: 2px;
+}
+
+.toast-message {
+    font-size: 0.85rem;
+    color: #666;
+    line-height: 1.3;
+}
+
+.toast-close {
+    background: none;
+    border: none;
+    color: #ccc;
+    font-size: 1.2rem;
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.toast-close:hover {
+    color: #00171F;
+}
+
+/* Cores dos Tipos */
+.toast.success {
+    border-left-color: #00A7E1;
+}
+
+/* Seu Azul Principal */
+.toast.success .toast-icon {
+    color: #00A7E1;
+}
+
+.toast.error {
+    border-left-color: #ff4b4b;
+}
+
+.toast.error .toast-icon {
+    color: #ff4b4b;
+}
+
+.toast.warning {
+    border-left-color: #ffb703;
+}
+
+.toast.warning .toast-icon {
+    color: #ffb703;
+}
+
+/* 🛠️ APENAS PARA O MENU DE TESTE (Pode apagar depois) */
+.debug-menu {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    background: rgba(0, 23, 31, 0.9);
+    padding: 15px;
+    border-radius: 10px;
+    z-index: 10000;
+    display: flex;
+    gap: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.debug-btn {
+    padding: 8px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    color: white;
+}
+
+.btn-test-success {
+    background: #00A7E1;
+}
+
+.btn-test-error {
+    background: #ff4b4b;
+}
+
+.btn-test-warn {
+    background: #ffb703;
+    color: #333;
+}
+
+/* --- RESPONSIVIDADE DO MODAL --- */
+@media screen and (max-width: 768px) {
+    .modal-card {
+        width: 90%;
+        height: 70vh;
+        padding: 25px;
+    }
+}
+
+/* --- RESPONSIVIDADE CORRIGIDA (Notebooks 1366px - 1440px) --- */
+@media screen and (max-width: 1440px) {
+
+    /* HEADER */
+    .header {
+        height: 60px;
+        padding: 0 25px;
+    }
+
+    .logo img {
+        height: 100%;
+        max-height: 50px;
+        width: auto;
+    }
+
+    .nav a {
+        height: 60px;
+        width: 110px;
+        font-size: 0.85rem;
+    }
+
+    .header-spacer {
+        width: 100px;
+    }
+
+    /* 2. CARD PRINCIPAL (Proporção 3:2) */
+    .main-container {
+        padding-top: 15px;
+        /* Margem superior/inferior para o card flutuar */
+        padding-bottom: 15px;
+        align-items: center;
+    }
+
+    .card {
+        /* Ajuste de Proporção sugerido */
+        width: 750px;
+        min-height: 500px;
+        /* Sua escolha */
+    }
+
+    /* 3. PADDING INTERNO */
+    .form,
+    .register-section {
+        /* Padding lateral 35px equilibra com a largura de 750px */
+        padding: 10px 35px;
+    }
+
+    .title {
+        font-size: 1.4rem;
+        margin-bottom: 10px;
+    }
+
+    .royal-content h3 {
+        font-size: 1.4rem;
+        margin-bottom: 5px;
+    }
+
+    .royal-content p {
+        font-size: 0.8rem;
+        margin-bottom: 15px;
+        line-height: 1.2;
+    }
+
+    /* 4. INPUTS E SELECTS (Compactos mas com leve respiro) */
+    .main-form input,
+    .main-form select,
+    .register-grid input,
+    .register-grid select,
+    .custom-select {
+        padding: 0 12px;
+
+        /* Mantive 32px para garantir que não role a tela */
+        height: 32px !important;
+
+        /* Aumentei levemente de 6px para 8px pois temos 40px extras de altura agora */
+        margin-bottom: 8px;
+
+        font-size: 0.8rem !important;
+
+        line-height: 32px;
+        display: flex;
+        align-items: center;
+        border-radius: 6px;
+    }
+
+    /* Ajuste da lista do convênio */
+    .custom-options {
+        top: 34px;
+        /* 32px do input + 2px borda */
+        max-height: 180px;
+        overflow-y: auto;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .custom-options li {
+        padding: 8px 12px;
+        font-size: 0.8rem;
+    }
+
+    /* Reset inputs normais */
+    .register-grid input,
+    .main-form input,
+    .main-form select {
+        display: block;
+        line-height: normal;
+    }
+
+    .register-grid select {
+        padding-right: 20px;
+    }
+
+    /* 5. CHECKBOX E BOTÕES */
+    .terms-checkbox {
+        font-size: 0.7rem;
+        margin-top: 5px;
+    }
+
+    .terms-checkbox input[type="checkbox"] {
+        width: 16px !important;
+        height: 16px !important;
+        min-width: 16px;
+    }
+
+    .btn-submit,
+    .btn-register {
+        padding: 0 20px;
+        height: 36px;
+        font-size: 0.85rem;
+        margin-top: 5px;
+    }
+
+    /* 6. GRID */
+    .register-grid {
+        /* Gap vertical de 8px (antes era 6px) fica mais bonito */
+        gap: 8px 15px;
+    }
+
+    .register-submit {
+        margin-top: 10px;
+        width: 100%;
+    }
+
+    .forgot-password {
+        margin-bottom: 10px;
+        font-size: 0.75rem;
+    }
+
+    .separator {
+        font-size: 0.75rem;
+        margin-bottom: 5px;
+    }
+
+    .separator.top-space {
+        margin-top: 5px;
+    }
+}
+
+
+/* --- CALENDÁRIO COMPACTO (Ajuste Fino de Layout) --- */
+
+/* 1. Container Principal */
+.flatpickr-calendar {
+    width: 260px !important;
+    /* Mantendo o tamanho que você gostou */
+    padding: 10px !important;
+    border-radius: 12px !important;
+    border: none !important;
+    box-shadow: 0 -5px 25px rgba(0, 52, 89, 0.2) !important;
+    font-family: 'Poppins', sans-serif !important;
+    background: #ffffff !important;
+    margin-bottom: 10px !important;
+    /* Garante que nada vaze */
+    overflow: hidden !important;
+}
+
+/* Remove setinhas externas */
+.flatpickr-calendar::before,
+.flatpickr-calendar::after {
+    display: none !important;
+}
+
+/* 2. Cabeçalho (Azul Royal) */
+.flatpickr-months {
+    background: #003459 !important;
+    border-radius: 8px !important;
+    padding: 0 10px !important;
+    /* Padding lateral para afastar as setas */
+    margin-bottom: 10px !important;
+    height: 50px !important;
+
+    /* Centralização perfeita */
+    display: flex !important;
+    align-items: center !important;
+    position: relative !important;
+}
+
+/* Setas de Navegação (Centralizadas Verticalmente) */
+.flatpickr-prev-month,
+.flatpickr-next-month {
+    position: absolute !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    /* O segredo da centralização */
+    padding: 0 !important;
+    height: 14px !important;
+    width: 14px !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+.flatpickr-prev-month {
+    left: 15px !important;
+}
+
+.flatpickr-next-month {
+    right: 15px !important;
+}
+
+.flatpickr-prev-month svg,
+.flatpickr-next-month svg {
+    width: 14px !important;
+    height: 14px !important;
+    stroke: #fff !important;
+    stroke-width: 3px !important;
+    fill: none !important;
+}
+
+/* 3. Mês e Ano */
+.flatpickr-current-month {
+    width: 100% !important;
+    padding: 0 !important;
+    left: 0 !important;
+    color: white !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    height: 100% !important;
+}
+
+/* Mês como TEXTO (Travado) */
+.flatpickr-monthDropdown-months {
+    background: transparent !important;
+    border: none !important;
+    color: white !important;
+    font-weight: 700 !important;
+    font-size: 1.1rem !important;
+    /* Um pouco maior */
+    padding: 0 !important;
+    margin-right: 8px !important;
+    /* Espaço entre Mês e Ano */
+    appearance: none !important;
+    pointer-events: none !important;
+    /* <--- TRUQUE: O usuário não pode clicar */
+    cursor: default !important;
+}
+
+/* Wrapper do Ano */
+.numInputWrapper {
+    width: 65px !important;
+    /* Largura fixa para caber ano e setas */
+}
+
+/* Input do Ano */
+.numInputWrapper input.cur-year {
+    color: white !important;
+    font-weight: 600 !important;
+    font-size: 1rem !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    height: auto !important;
+    cursor: default !important;
+}
+
+/* Setinhas do Ano (Descoladas) */
+.numInputWrapper span.arrowUp,
+.numInputWrapper span.arrowDown {
+    opacity: 1 !important;
+    border: none !important;
+    right: 0 !important;
+    /* Gruda na direita do wrapper */
+    padding: 0 4px !important;
+    /* Facilita o clique */
+}
+
+.numInputWrapper span.arrowUp:after {
+    border-bottom-color: #fff !important;
+    top: 40% !important;
+}
+
+.numInputWrapper span.arrowDown:after {
+    border-top-color: #fff !important;
+    top: 40% !important;
+}
+
+/* 4. Dias da Semana e Container Interno */
+.flatpickr-innerContainer {
+    width: 100% !important;
+    padding: 0 !important;
+}
+
+.flatpickr-rContainer {
+    width: 100% !important;
+}
+
+.flatpickr-days {
+    width: 100% !important;
+    border: none !important;
+}
+
+.dayContainer {
+    width: 100% !important;
+    min-width: 100% !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    display: flex !important;
+    justify-content: space-between !important;
+    /* Espalha os dias igualmente */
+}
+
+/* Cabeçalho da Semana (Dom, Seg...) */
+.flatpickr-weekdays {
+    width: 100% !important;
+    height: 24px !important;
+    margin-bottom: 5px !important;
+}
+
+span.flatpickr-weekday {
+    color: #007EA7 !important;
+    font-size: 0.75rem !important;
+    font-weight: 700 !important;
+}
+
+/* 5. Os Dias (Correção do Corte) */
+.flatpickr-day {
+    /* MATEMÁTICA: 100% / 7 dias = 14.28%. Usamos 13.5% para ter folga */
+    flex-basis: 13.5% !important;
+    max-width: 13.5% !important;
+    height: 30px !important;
+    line-height: 30px !important;
+    font-size: 0.85rem !important;
+    margin: 2px 0 !important;
+    /* Remove margem lateral, só vertical */
+    border-radius: 6px !important;
+    color: #555 !important;
+    border: 1px solid transparent !important;
+}
+
+/* Esconde dias do mês seguinte/anterior */
+.flatpickr-day.nextMonthDay,
+.flatpickr-day.prevMonthDay {
+    visibility: hidden !important;
+    /* Mantém o espaço mas fica invisível */
+}
+
+/* Hover e Seleção */
+.flatpickr-day:hover {
+    background: #e6f7ff !important;
+    cursor: pointer;
+}
+
+.flatpickr-day.selected {
+    background: #00A7E1 !important;
+    border-color: #00A7E1 !important;
+    color: white !important;
+    font-weight: bold !important;
+}
+
+.flatpickr-day.today {
+    border-color: #00A7E1 !important;
+}
+
+.flatpickr-day.today:hover {
+    background: #00A7E1 !important;
+    color: white !important;
+}

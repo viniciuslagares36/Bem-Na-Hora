@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bem na Hora - Encontre a Clínica Ideal</title>
+  <meta name="description"
+    content="Encontre clínicas de saúde verificadas perto de você. Busque, compare e agende sua consulta com facilidade e segurança." />
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+  <link rel="icon" href="{{ url_for('static', filename='img/relogio.png') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='lp/landingPage.css') }}" />
+</head>
+
+<body>
+
+  <header class="header">
+  <div class="logo">
+    <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Bem Na Hora">
+  </div>
+  <nav class="nav">
+    <a href="#" class="nav-button1">Saiba mais</a>
+    <a href="{{ url_for('vitrine') }}" class="nav-button2">Consultas</a>
+    <a href="{{ url_for('cadastro_parceiro') }}" class="nav-button3">Torne-se<br>Parceiro</a>
+  </nav>
+  {% if usuario_logado %}
+  <div class="profile-pic">
+    <img src="{% if foto_perfil_usuario %}{{ url_for('static', filename='uploads/' + foto_perfil_usuario) }}{% else %}https://cdn-icons-png.flaticon.com/512/3135/3135715.png{% endif %}" alt="Perfil">
+    <div class="dropdown-menu">
+      {% if tipo_usuario == 'usuario' %}
+        <a href="{{ url_for('perfil_usuario') }}" class="dropdown-item">Meu Perfil</a>
+      {% elif tipo_usuario == 'profissional' %}
+        <a href="{{ url_for('doutor_editar') }}" class="dropdown-item">Editar Anúncio</a>
+      {% elif tipo_usuario == 'clinica' %}
+        <a href="{{ url_for('clinica_editar') }}" class="dropdown-item">Editar Anúncio</a>
+      {% endif %}
+      <a href="{{ url_for('agenda') }}" class="dropdown-item">Agenda</a>
+      <button class="dropdown-item" onclick="logout()">Sair</button>
+    </div>
+  </div>
+  {% else %}
+  <a href="{{ url_for('cadastro_usuario') }}" class="btn-login">Login</a>
+  {% endif %}
+</header>
+
+  <main id="main" class="site-main" role="main">
+    <section id="hero" class="section hero bg-gradient-hero" aria-labelledby="hero-title">
+      <div class="container">
+        <div class="hero-grid">
+
+          <div class="hero-left">
+            <div class="hero-content">
+
+              <h1 id="hero-title" class="hero-title">
+                Encontre a Clínica
+                <span class="hero-title-strong">Ideal Para Você</span>
+              </h1>
+
+              <p class="hero-subtitle">Milhares de clínicas de confiança perto de você. Agende sua consulta com
+                facilidade.</p>
+
+              <div class="main-search-bar">
+                <div class="search-input-group">
+                  <i class="fa-solid fa-magnifying-glass"></i>
+                  <input type="text" placeholder="Ex: Cardiologista, Clínica Geral...">
+                </div>
+                <div class="divider"></div>
+                <div class="search-input-group">
+                  <i class="fa-solid fa-location-dot"></i>
+                  <input type="text" placeholder="Localização (Cidade ou Bairro)">
+                </div>
+                <button class="btn-search">Pesquisar</button>
+              </div>
+
+              <div class="stats">
+                <div class="stat">
+                  <div class="stat-number">500+</div>
+                  <div class="stat-label">Clínicas Parceiras</div>
+                </div>
+                <div class="stat">
+                  <div class="stat-number">50k+</div>
+                  <div class="stat-label">Consultas Realizadas</div>
+                </div>
+                <div class="stat">
+                  <div class="stat-number">4.9★</div>
+                  <div class="stat-label">Avaliação Média</div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="features" class="section" aria-labelledby="features-title">
+      <div class="container">
+        <div class="section-head">
+          <h2 id="features-title" class="section-title">Por Que Escolher Nossa Plataforma?</h2>
+          <p class="section-desc">Conectamos você às melhores clínicas da sua região com total segurança e praticidade
+          </p>
+        </div>
+        <div class="grid grid-4">
+          <article class="card">
+            <div class="card-icon bg-primary">📅</div>
+            <h3 class="card-title">Agendamento Fácil</h3>
+            <p class="card-text">Marque sua consulta em poucos cliques, sem complicação</p>
+          </article>
+          <article class="card">
+            <div class="card-icon bg-secondary">🛡️</div>
+            <h3 class="card-title">Clínicas Verificadas</h3>
+            <p class="card-text">Todas as clínicas são verificadas e aprovadas</p>
+          </article>
+          <article class="card">
+            <div class="card-icon bg-accent">⏱️</div>
+            <h3 class="card-title">Atendimento Rápido</h3>
+            <p class="card-text">Encontre horários disponíveis imediatamente</p>
+          </article>
+          <article class="card">
+            <div class="card-icon bg-primary">⭐</div>
+            <h3 class="card-title">Avaliações Reais</h3>
+            <p class="card-text">Veja opiniões de pacientes reais antes de escolher</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="como-funciona" class="section section-muted" aria-labelledby="steps-title">
+      <div class="container">
+        <div class="section-head">
+          <h2 id="steps-title" class="section-title">Como Funciona</h2>
+          <p class="section-desc">Simples, rápido e seguro. Veja como é fácil encontrar a clínica ideal</p>
+        </div>
+        <div class="grid grid-3 steps">
+          <article class="step">
+            <div class="step-badge">01</div>
+            <div class="step-icon">🔎</div>
+            <h3 class="step-title">Busque</h3>
+            <p class="step-text">Digite sua localização e veja clínicas próximas a você</p>
+          </article>
+          <article class="step">
+            <div class="step-badge">02</div>
+            <div class="step-icon">📄</div>
+            <h3 class="step-title">Compare</h3>
+            <p class="step-text">Analise avaliações, especialidades e valores</p>
+          </article>
+          <article class="step">
+            <div class="step-badge">03</div>
+            <div class="step-icon">📅</div>
+            <h3 class="step-title">Agende</h3>
+            <p class="step-text">Escolha o melhor horário e confirme sua consulta</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="especialidades" class="section bg-gradient-dark" aria-labelledby="cats-title">
+      <div class="container">
+        <div class="section-head section-head-dark">
+          <h2 id="cats-title" class="section-title text-inverse">Especialidades Disponíveis</h2>
+          <p class="section-desc text-inverse-soft">Encontre especialistas em diversas áreas da saúde</p>
+        </div>
+        <div class="grid grid-6 cats">
+          <button class="cat">
+            <div class="cat-icon">❤️</div>
+            <h3 class="cat-title">Cardiologia</h3>
+            <p class="cat-text">45 clínicas</p>
+          </button>
+          <button class="cat">
+            <div class="cat-icon">👁️</div>
+            <h3 class="cat-title">Oftalmologia</h3>
+            <p class="cat-text">38 clínicas</p>
+          </button>
+          <button class="cat">
+            <div class="cat-icon">✂️</div>
+            <h3 class="cat-title">Dermatologia</h3>
+            <p class="cat-text">52 clínicas</p>
+          </button>
+          <button class="cat">
+            <div class="cat-icon">👶</div>
+            <h3 class="cat-title">Pediatria</h3>
+            <p class="cat-text">41 clínicas</p>
+          </button>
+          <button class="cat">
+            <div class="cat-icon">🩺</div>
+            <h3 class="cat-title">Clínico Geral</h3>
+            <p class="cat-text">67 clínicas</p>
+          </button>
+          <button class="cat">
+            <div class="cat-icon">🧠</div>
+            <h3 class="cat-title">Neurologia</h3>
+            <p class="cat-text">29 clínicas</p>
+          </button>
+        </div>
+        <div class="center">
+        </div>
+      </div>
+    </section>
+
+    <section id="cta" class="section" aria-labelledby="cta-title">
+      <div class="container">
+        <div class="cta bg-gradient-hero">
+          <h2 id="cta-title" class="cta-title text-inverse">Pronto Para Cuidar da Sua Saúde?</h2>
+          <p class="cta-desc text-inverse-soft">Junte-se a milhares de pessoas que já encontraram a clínica ideal
+            através da nossa plataforma</p>
+          <div class="cta-actions">
+            <a href="#" class="btn btn-light">Começar Agora →</a>
+            <a href="#" class="btn btn-outline btn-outline-light">Saiba Mais</a>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <img src="{{ url_for('static', filename='img/logoBranco.png') }}" alt="LogoBranca Bem Na Hora" class="footer-logo">
+        </div>
+        <div>
+          <h4 class="footer-title">Links Rápidos</h4>
+          <ul class="footer-list">
+            <li><a href="#" class="footer-link">Sobre Nós</a></li>
+            <li><a href="#" class="footer-link">Consultas</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-title">Contato</h4>
+          <ul class="footer-list">
+            <li class="footer-contact">✉️ contato@bemnahora.com</li>
+            <li class="footer-contact">📞 (61) 98234-5678</li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="footer-title">Redes Sociais</h4>
+          <ul class="socials">
+            <li><a href="#" id="insta" class="social-link"><i class="fab fa-instagram"></i></a></li>
+            <li><a href="#" id="twi" class="social-link"><i class="fab fa-twitter"></i></a></li>
+            <li><a href="#" id="face" class="social-link"><i class="fab fa-facebook-f"></i></a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer-copy">&copy; 2025 Bem Na Hora. Todos os direitos reservados.</div>
+    </div>
+  </footer>
+
+  <script src="{{ url_for('static', filename='header.js') }}"></script>
+  <script src="{{ url_for('static', filename='lp/landingPage.js') }}" defer></script>
+</body>
+
+</html>

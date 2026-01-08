@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Clínica - Bem Na Hora</title>
+    <link rel="icon" href="{{ url_for('static', filename='img/relogio.png') }}">
+
+    <!-- Fonte Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='global.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='clinicaEditar/clinicaEditar.css') }}">
+    
+    
+</head>
+
+<body>
+
+    <header class="header">
+  <div class="logo">
+    <a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='img/logo.png') }}" alt="Bem Na Hora"></a>
+  </div>
+  <nav class="nav">
+    <a href="#" class="nav-button1">Saiba mais</a>
+    <a href="{{ url_for('vitrine') }}" class="nav-button2">Consultas</a>
+    <a href="{{ url_for('cadastro_parceiro') }}" class="nav-button3">Torne-se<br>Parceiro</a>
+  </nav>
+  {% if usuario_logado %}
+  <div class="profile-pic">
+    <img src="{% if foto_perfil_usuario %}{{ url_for('static', filename='uploads/' + foto_perfil_usuario) }}{% else %}https://cdn-icons-png.flaticon.com/512/3135/3135715.png{% endif %}" alt="Perfil">
+    <div class="dropdown-menu">
+      {% if tipo_usuario == 'usuario' %}
+        <a href="{{ url_for('perfil_usuario') }}" class="dropdown-item">Meu Perfil</a>
+      {% elif tipo_usuario == 'profissional' %}
+        <a href="{{ url_for('doutor_editar') }}" class="dropdown-item">Editar Anúncio</a>
+      {% elif tipo_usuario == 'clinica' %}
+        <a href="{{ url_for('clinica_editar') }}" class="dropdown-item">Editar Anúncio</a>
+      {% endif %}
+      <a href="{{ url_for('agenda') }}" class="dropdown-item">Agenda</a>
+      <button class="dropdown-item" onclick="logout()">Sair</button>
+    </div>
+  </div>
+  {% else %}
+  <a href="{{ url_for('cadastro_usuario') }}" class="btn-login">Login</a>
+  {% endif %}
+</header>
+
+    <main class="main-content">
+        <div class="form-container">
+
+            <div class="page-header">
+                <h1>Editar Perfil da Clínica</h1>
+                <p>Gerencie as informações institucionais, corpo clínico e serviços oferecidos.</p>
+                <div class="separator-line"></div>
+            </div>
+
+            <form class="edit-form" id="form-clinica">
+
+                <!-- LOGO DA CLÍNICA -->
+                <div class="profile-photo-section">
+                    <div class="photo-container">
+                        <div class="photo-preview" id="photo-preview">
+                            <i class="fa-solid fa-hospital"></i>
+                        </div>
+                        <label class="change-photo-btn">
+                            <input type="file" id="input-foto" accept="image/*" hidden>
+                            <i class="fa-solid fa-camera"></i>
+                        </label>
+                    </div>
+                    <p class="section-help">Logo da clínica (será exibido redondo ou ajustado).</p>
+                </div>
+
+                <!-- SEÇÃO 1: DADOS INSTITUCIONAIS -->
+                <section class="form-section">
+                    <h3><i class="fa-solid fa-hospital-user"></i> Dados Institucionais</h3>
+
+                    <div class="form-grid">
+                        <div class="input-group span-2">
+                            <label>Nome da Clínica</label>
+                            <input type="text" id="nome-clinica" value="Clínica Bem Estar Integral"
+                                placeholder="Nome Fantasia">
+                        </div>
+
+                        <div class="input-group">
+                            <label>Tipo de Estabelecimento</label>
+                            <input type="text" id="tipo-clinica" value="Multidisciplinar"
+                                placeholder="Ex: Laboratório, Clínica Geral...">
+                        </div>
+
+                        <div class="input-group">
+                            <label>Ano de Fundação</label>
+                            <input type="number" id="ano-fundacao" value="2005" placeholder="Ex: 2010">
+                        </div>
+
+                        <div class="input-group span-2">
+                            <label>Diretor Técnico (Nome e CRM)</label>
+                            <input type="text" id="diretor-tecnico" value="Dr. Silva (CRM 123)"
+                                placeholder="Ex: Dr. Fulano (CRM 12345)">
+                        </div>
+                    </div>
+
+                    <!-- REDES SOCIAIS -->
+                    <div class="form-grid mt-3">
+                        <div class="input-group">
+                            <label>Site Oficial</label>
+                            <input type="text" id="site-clinica" placeholder="www.suaclinica.com.br">
+                        </div>
+                        <div class="input-group">
+                            <label>Instagram</label>
+                            <input type="text" id="insta-clinica" placeholder="@suaclinica">
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SEÇÃO 2: INFRAESTRUTURA -->
+                <section class="form-section">
+                    <h3><i class="fa-solid fa-building"></i> Infraestrutura e Facilidades</h3>
+                    <div class="input-group full-width">
+                        <label>Facilidades Disponíveis</label>
+                        <p class="section-help" style="margin-bottom: 10px;">Adicione tags como Estacionamento, Wi-Fi,
+                            Acessibilidade.</p>
+
+                        <div class="tags-selection" id="infra-container">
+                            <label class="tag-checkbox">
+                                <input type="checkbox" checked value="Acessibilidade">
+                                <span><i class="fa-solid fa-wheelchair"></i> Acessibilidade</span>
+                            </label>
+                            <label class="tag-checkbox">
+                                <input type="checkbox" checked value="Estacionamento">
+                                <span><i class="fa-solid fa-square-parking"></i> Estacionamento</span>
+                            </label>
+                            <label class="tag-checkbox">
+                                <input type="checkbox" checked value="Wi-Fi Grátis">
+                                <span><i class="fa-solid fa-wifi"></i> Wi-Fi Grátis</span>
+                            </label>
+                            <label class="tag-checkbox">
+                                <input type="checkbox" value="Cafeteria">
+                                <span><i class="fa-solid fa-mug-hot"></i> Cafeteria</span>
+                            </label>
+                            <label class="tag-checkbox">
+                                <input type="checkbox" value="Espaço Kids">
+                                <span><i class="fa-solid fa-child"></i> Espaço Kids</span>
+                            </label>
+                            <button type="button" class="add-tag-btn" id="btn-add-infra">+ Adicionar outro</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SEÇÃO 3: CORPO CLÍNICO (NOVO) -->
+                <section class="form-section">
+                    <h3><i class="fa-solid fa-user-doctor"></i> Corpo Clínico</h3>
+                    <p class="section-help">Adicione os principais especialistas da sua equipe.</p>
+
+                    <div class="service-input-area"
+                        style="background-color: #f0f7ff; border: 1px dashed var(--azul-escuro);">
+                        <div class="form-grid compact-grid">
+                            <div class="input-group span-2-mobile" style="flex: 2;">
+                                <label>Nome do Especialista</label>
+                                <input type="text" id="membro-nome" placeholder="Ex: Dr. Carlos Eduardo">
+                            </div>
+                            <div class="input-group span-2-mobile" style="flex: 1;">
+                                <label>Especialidade</label>
+                                <input type="text" id="membro-especialidade" placeholder="Ex: Cardiologia">
+                            </div>
+                            <div class="input-group span-2-mobile" style="flex: 1;">
+                                <label>Experiência</label>
+                                <input type="text" id="membro-xp" placeholder="Ex: 15 anos">
+                            </div>
+                            <div class="input-group" style="justify-content: flex-end;">
+                                <button type="button" id="btn-add-membro" class="btn-add-service">
+                                    <i class="fa-solid fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="equipe-container" class="services-container grid-equipe">
+                        <!-- Cards de Membros via JS -->
+                    </div>
+                </section>
+
+                <!-- SEÇÃO 4: EXAMES E PROCEDIMENTOS -->
+                <section class="form-section">
+                    <h3><i class="fa-solid fa-list-check"></i> Exames e Procedimentos</h3>
+                    <p class="section-help">Liste os principais exames realizados na clínica.</p>
+
+                    <div class="service-input-area">
+                        <div class="form-grid compact-grid">
+                            <div class="input-group span-2-mobile" style="flex: 2;">
+                                <label>Nome do Procedimento</label>
+                                <input type="text" id="service-name" placeholder="Ex: Ultrassonografia Geral">
+                            </div>
+                            <div class="input-group span-2-mobile" style="flex: 1;">
+                                <label>Valor (A partir de)</label>
+                                <input type="text" id="service-price" placeholder="Ex: 120,00">
+                            </div>
+                            <div class="input-group" style="justify-content: flex-end;">
+                                <button type="button" id="add-service-btn" class="btn-add-service">
+                                    <i class="fa-solid fa-plus"></i> Adicionar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="services-container" class="services-container">
+                        <!-- Cards via JS -->
+                    </div>
+                    <p id="service-counter" class="counter-text">0/15 serviços criados</p>
+                </section>
+
+                <!-- SEÇÃO 5: SOBRE A CLÍNICA -->
+                <section class="form-section">
+                    <h3><i class="fa-solid fa-circle-info"></i> Sobre a Clínica</h3>
+                    <div class="form-grid">
+                        <div class="input-group full-width span-2">
+                            <label>História e Missão</label>
+                            <textarea rows="6" id="historia"
+                                placeholder="Conte sobre a fundação, missão e valores da clínica..."></textarea>
+                        </div>
+
+                        <!-- NOVO: GALERIA DE FOTOS -->
+                        <div class="input-group full-width span-2 mt-3">
+                            <label>Galeria de Fotos (Nossa Estrutura)</label>
+                            <p class="section-help">Adicione fotos da recepção, consultórios e equipamentos.</p>
+
+                            <!-- Área de Upload -->
+                            <div class="gallery-upload-area" onclick="document.getElementById('input-galeria').click()">
+                                <i class="fa-solid fa-cloud-arrow-up"></i>
+                                <span>Clique para selecionar fotos</span>
+                                <input type="file" id="input-galeria" multiple accept="image/*" hidden>
+                            </div>
+
+                            <!-- Grid de Previews -->
+                            <div id="galeria-container" class="gallery-grid-edit">
+                                <!-- As imagens aparecerão aqui -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SEÇÃO 6: LOCALIZAÇÃO & HORÁRIOS -->
+                <section class="form-section">
+                    <h3><i class="fa-solid fa-map-location-dot"></i> Localização & Horários</h3>
+
+                    <div class="form-grid">
+                        <div class="input-group span-2">
+                            <label>Endereço Completo</label>
+                            <input type="text" id="endereco" value="Rua Domingos de Morais, 500">
+                        </div>
+                        <div class="input-group">
+                            <label>Bairro</label>
+                            <input type="text" id="bairro" value="Vila Mariana">
+                        </div>
+                        <div class="input-group">
+                            <label>Cidade/UF</label>
+                            <input type="text" id="cidade" value="São Paulo - SP">
+                        </div>
+                        <div class="input-group span-2">
+                            <label>Telefone / WhatsApp</label>
+                            <input type="tel" id="telefone" value="(11) 98234-5678">
+                        </div>
+
+                        <!-- Horários -->
+                        <div class="input-group">
+                            <label>Horário (Segunda a Sexta)</label>
+                            <input type="text" id="horario-semana" value="07:00 - 20:00">
+                        </div>
+                        <div class="input-group">
+                            <label>Horário (Finais de Semana)</label>
+                            <input type="text" id="horario-fim-semana" value="Sáb: 07:00 - 14:00">
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SEÇÃO 7: CONVÊNIOS -->
+                <section class="form-section">
+                    <h3><i class="fa-solid fa-notes-medical"></i> Convênios Aceitos</h3>
+                    <div class="tags-selection" id="convenios-container">
+                        <label class="tag-checkbox blue-theme">
+                            <input type="checkbox" checked value="Unimed">
+                            <span>Unimed</span>
+                        </label>
+                        <label class="tag-checkbox blue-theme">
+                            <input type="checkbox" checked value="Bradesco Saúde">
+                            <span>Bradesco Saúde</span>
+                        </label>
+                        <label class="tag-checkbox blue-theme">
+                            <input type="checkbox" value="Amil">
+                            <span>Amil</span>
+                        </label>
+                        <label class="tag-checkbox blue-theme">
+                            <input type="checkbox" value="SulAmérica">
+                            <span>SulAmérica</span>
+                        </label>
+                        <label class="tag-checkbox blue-theme">
+                            <input type="checkbox" value="Porto Seguro">
+                            <span>Porto Seguro</span>
+                        </label>
+                        <label class="tag-checkbox blue-theme">
+                            <input type="checkbox" value="NotreDame Intermédica">
+                            <span>NotreDame Intermédica</span>
+                        </label>
+                        <label class="tag-checkbox blue-theme">
+                            <input type="checkbox" value="Hapvida">
+                            <span>Hapvida</span>
+                        </label>
+                        <label class="tag-checkbox blue-theme">
+                            <input type="checkbox" value="Allianz">
+                            <span>Allianz</span>
+                        </label>
+                        <label class="tag-checkbox blue-theme">
+                            <input type="checkbox" value="Omint">
+                            <span>Omint</span>
+                        </label>
+                        <label class="tag-checkbox blue-theme">
+                            <input type="checkbox" value="IPASGO">
+                            <span>IPASGO</span>
+                        </label>
+                    </div>
+                </section>
+
+                <!-- BOTÕES -->
+                <div class="form-actions">
+                    <button type="button" class="btn-cancel">Cancelar</button>
+                    <button type="submit" class="btn-save">Salvar Perfil da Clínica</button>
+                </div>
+
+            </form>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div>
+        <img src="{{ url_for('static', filename='img/logoBranco.png') }}" alt="LogoBranca Bem Na Hora" class="footer-logo">
+      </div>
+      
+      <div>
+        <h4 class="footer-title">Links Rápidos</h4>
+        <ul class="footer-list">
+          <li><a href="#" class="footer-link">Sobre Nós</a></li>
+          <li><a href="#" class="footer-link">Consultas</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-title">Contato</h4>
+        <ul class="footer-list">
+          <li class="footer-contact">✉️ contato@bemnahora.com</li>
+          <li class="footer-contact">📞 (61) 98234-5678</li>
+        </ul>
+      </div>
+
+      <div>
+        <h4 class="footer-title">Redes Sociais</h4>
+        <ul class="socials">
+          <li><a href="#" id="insta" class="social-link"><i class="fab fa-instagram"></i></a></li>
+          <li><a href="#" id="twi" class="social-link"><i class="fab fa-twitter"></i></a></li>
+          <li><a href="#" id="face" class="social-link"><i class="fab fa-facebook-f"></i></a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-copy">&copy; 2025 Bem Na Hora. Todos os direitos reservados.</div>
+  </div>
+</footer>
+
+    <!-- JS EXTERNO -->
+    <script src="{{ url_for('static', filename='clinicaEditar/clinicaEditar.js') }}"></script>
+    <script src="{{ url_for('static', filename='header.js') }}"></script>
+</body>
+
+</html>

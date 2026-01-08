@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Parceiro</title>
+    <link rel="icon" href="{{ url_for('static', filename='img/relogio.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='parceiroCadastro/medico.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='global.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <header class="header">
+        <div class="logo">
+            <a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='img/logo.png') }}" alt="Bem Na Hora"></a>
+        </div>
+        <nav class="nav">
+            <a href="#" class="nav-button1">Saiba mais</a>
+            <a href="{{ url_for('vitrine') }}" class="nav-button2">Consultas</a>
+            <a href="{{ url_for('cadastro_parceiro') }}" class="nav-button3">Torne-se<br>Parceiro</a>
+        </nav>
+        <div class="header-spacer"></div>
+    </header>
+
+    <main class="main-container">
+        <div class="login-box" id="main-card-parceiro">
+            <div class="card">
+
+                <div class="register-royal" id="royal-section">
+                    <div class="royal-content royal-partner-info">
+                        <h3>Seja um Parceiro</h3>
+
+                        <p>Preencha o formulário para fazer parte da nossa rede.</p>
+
+                        <p id="royal-desc">Gerencie seus atendimentos e aumente sua visibilidade profissional.</p>
+
+                        <div class="filter-group-royal">
+                            <div class="type-toggle-container">
+                                <input type="radio" name="type" id="type-pro" checked>
+                                <label for="type-pro">Profissional</label>
+
+                                <input type="radio" name="type" id="type-clinic">
+                                <label for="type-clinic">Clínica</label>
+
+                                <div class="toggle-background"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-container">
+                    <div class="form partner-section" id="partner-form-section">
+                        <h2 class="title" id="form-title">Cadastro Profissional</h2>
+
+                        <form class="main-form register-grid" id="form-cadastro-parceiro">
+
+                            <input type="text" class="input-full field-prof" id="input-nome-prof" placeholder="Nome Completo" required>
+                            <input type="text" class="input-full field-clinic" id="input-nome-clinic" placeholder="Nome da Clínica"
+                                style="display: none;" disabled>
+
+                            <input type="email" class="input-full" id="input-email" placeholder="E-mail" required>
+
+                            <input type="text" class="input-half field-prof" id="input-cpf" placeholder="CPF" maxlength="14" required>
+                            <input type="text" class="input-half field-clinic" id="input-cnpj" placeholder="CNPJ" maxlength="18"
+                                style="display: none;" disabled>
+                            <input type="tel" class="input-half" id="input-telefone" placeholder="Telefone" required>
+
+                            <input type="text" class="input-full" id="registro-input" placeholder="CRM/CRO" required>
+                            <input type="password" class="input-full" id="input-senha" placeholder="Senha" required>
+
+                            <div class="terms-checkbox input-full">
+                                <input type="checkbox" id="terms-partner" required>
+                                <label for="terms-partner">Eu concordo com os <a href="#" class="terms-link"
+                                        id="open-terms-modal">Termos de Uso</a></label>
+                            </div>
+
+                            <button type="submit" class="btn-submit register-submit input-full" id="btn-submit-cadastro">INSCREVER</button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <div class="modal-overlay" id="terms-modal">
+        <div class="modal-card">
+            <button class="close-modal" id="close-modal-btn">&times;</button>
+            <h2 class="modal-title">Termos de Uso</h2>
+            <div class="modal-body">
+                <p><strong>Última atualização: Dezembro de 2025</strong></p>
+                <h3>1. Aceitação dos Termos</h3>
+                <p>Ao acessar e usar o site <strong>Bem Na Hora</strong>, você concorda em cumprir estes termos de
+                    serviço, todas as leis e regulamentos aplicáveis ​​e concorda que é responsável pelo cumprimento de
+                    todas as leis locais aplicáveis. Se você não concordar com algum desses termos, está proibido de
+                    usar ou acessar este site.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="toast-container"></div>
+    <script src="{{ url_for('static', filename='parceiroCadastro/medico.js') }}"></script>
+</body>
+
+</html>

@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Perfil - Bem Na Hora</title>
+    <link rel="icon" href="{{ url_for('static', filename='img/relogio.png') }}">
+    
+    <!-- Fonte Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='doutorEditar/doutorEditar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='global.css') }}">
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+        <div class="logo">
+            <a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='img/logo.png') }}" alt="Bem Na Hora"></a>
+        </div>
+        <nav class="nav">
+            <a href="#" class="nav-button1">Saiba mais</a>
+            <a href="{{ url_for('vitrine') }}" class="nav-button2">Consultas</a>
+            <a href="{{ url_for('cadastro_parceiro') }}" class="nav-button3">Torne-se<br>Parceiro</a>
+        </nav>
+        {% if usuario_logado %}
+        <div class="profile-pic">
+            <img src="{% if foto_perfil_usuario %}{{ url_for('static', filename='uploads/' + foto_perfil_usuario) }}{% else %}https://cdn-icons-png.flaticon.com/512/3135/3135715.png{% endif %}" alt="Perfil">
+            <div class="dropdown-menu">
+                {% if tipo_usuario == 'usuario' %}
+                    <a href="{{ url_for('perfil_usuario') }}" class="dropdown-item">Meu Perfil</a>
+                {% elif tipo_usuario == 'profissional' %}
+                    <a href="{{ url_for('doutor_editar') }}" class="dropdown-item">Editar Anúncio</a>
+                {% elif tipo_usuario == 'clinica' %}
+                    <a href="{{ url_for('clinica_editar') }}" class="dropdown-item">Editar Anúncio</a>
+                {% endif %}
+                <a href="{{ url_for('agenda') }}" class="dropdown-item">Agenda</a>
+                <button class="dropdown-item" onclick="logout()">Sair</button>
+            </div>
+        </div>
+        {% else %}
+        <a href="{{ url_for('cadastro_usuario') }}" class="btn-login">Login</a>
+        {% endif %}
+    </header>
+
+    <main class="main-content">
+        <div class="form-container">
+            
+            <div class="page-header">
+                <h1>Editar Perfil Profissional</h1>
+                <p>Mantenha suas informações atualizadas para que os pacientes possam te encontrar facilmente.</p>
+                <div class="separator-line"></div>
+            </div>
+
+            <form class="edit-form" id="form-perfil">
+                
+                <!-- FOTO DE PERFIL -->
+                <div class="profile-photo-section">
+                    <div class="photo-container">
+                        <div class="photo-preview" id="photo-preview">
+                            <i class="fa-solid fa-user-doctor"></i>
+                        </div>
+                        <label class="change-photo-btn">
+                            <input type="file" id="input-foto" accept="image/*" hidden>
+                            <i class="fa-solid fa-camera"></i>
+                        </label>
+                    </div>
+                    <p class="section-help">Esta será a foto exibida na vitrine e no seu perfil.</p>
+                </div>
+
+                <!-- SEÇÃO 1: INFORMAÇÕES DO CARTÃO -->
+                <section class="form-section">
+                    <h3><i class="fa-solid fa-id-card"></i> Informações do Cartão</h3>
+                    <p class="section-help">Dados essenciais que aparecem no seu cartão na vitrine de busca.</p>
+                    
+                    <div class="form-grid">
+                        <div class="input-group span-2">
+                            <label>Nome de Exibição</label>
+                            <input type="text" id="nome-exibicao" value="Dr. Carlos Eduardo" placeholder="Como você quer ser chamado">
+                        </div>
+
+                        <div class="input-group">
+                            <label>Especialidade Principal</label>
+                            <input type="text" id="especialidade-input" value="Cardiologia" placeholder="Ex: Cardiologia, Dermatologia...">
+                        </div>
+
+                        <div class="input-group">
+                            <label>Anos de Experiência</label>
+                            <input type="text" id="anos-experiencia" value="15 Anos" placeholder="Ex: 10 Anos">
+                        </div>
+                    </div>
+
+                    <!-- FOCOS DE ATENDIMENTO -->
+                    <div class="input-group full-width mt-3">
+                        <label>Focos de Atendimento</label>
+                        <p class="section-help" style="margin-bottom: 10px;">Selecione as condições ou tratamentos que você realiza.</p>
+                        
+                        <div class="tags-selection" id="focos-container">
+                            <label class="tag-checkbox">
+                                <input type="checkbox" checked value="Check-up">
+                                <span>Check-up</span>
+                            </label>
+                            <label class="tag-checkbox">
+                                <input type="checkbox" checked value="Hipertensão">
+                                <span>Hipertensão</span>
+                            </label>
+                            <label class="tag-checkbox">
+                                <input type="checkbox" value="Arritmia">
+                                <span>Arritmia</span>
+                            </label>
+                            <label class="tag-checkbox">
+                                <input type="checkbox" value="Insuficiência Cardíaca">
+                                <span>Insuficiência Cardíaca</span>
+                            </label>
+                            <label class="tag-checkbox">
+                                <input type="checkbox" value="Prevenção">
+                                <span>Prevenção</span>
+                            </label>
+                            <button type="button" class="add-tag-btn" id="btn-add-foco">+ Adicionar outro</button>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SEÇÃO 2: SERVIÇOS E PREÇOS -->
+                <section class="form-section">
+                    <h3><i class="fa-solid fa-list-check"></i> Serviços e Preços</h3>
+                    <p class="section-help">Adicione os serviços que você oferece (Máx. 10).</p>
+
+                    <div class="service-input-area">
+                        <div class="form-grid compact-grid">
+                            <div class="input-group span-2-mobile" style="flex: 2;">
+                                <label>Nome do Serviço</label>
+                                <input type="text" id="service-name" placeholder="Ex: Consulta de Rotina">
+                            </div>
+                            <div class="input-group span-2-mobile" style="flex: 1;">
+                                <label>Valor (R$)</label>
+                                <input type="text" id="service-price" placeholder="Ex: 350,00">
+                            </div>
+                            <div class="input-group" style="justify-content: flex-end;">
+                                <button type="button" id="add-service-btn" class="btn-add-service">
+                                    <i class="fa-solid fa-plus"></i> Adicionar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="services-container" class="services-container">
+                        <!-- Cards via JS -->
+                    </div>
+                    <p id="service-counter" class="counter-text">0/10 serviços criados</p>
+                </section>
+
+                <!-- SEÇÃO 3: DETALHES -->
+                <section class="form-section">
+                    <h3><i class="fa-solid fa-user-doctor"></i> Detalhes do Perfil</h3>
+                    <div class="form-grid">
+                        <div class="input-group full-width span-2">
+                            <label>Minha História / Biografia</label>
+                            <textarea rows="6" id="biografia" placeholder="Conte um pouco sobre sua trajetória profissional..."></textarea>
+                        </div>
+                        
+                        <div class="input-group full-width span-2">
+                            <label>Formação Acadêmica</label>
+                            <p class="section-help">Liste suas graduações, residências e especializações.</p>
+                            
+                            <div class="service-input-area" style="background-color: #fcfcfc; border-style: dotted;">
+                                <div class="form-grid compact-grid">
+                                    <div class="input-group span-2-mobile" style="flex: 2;">
+                                        <label>Curso / Grau</label>
+                                        <input type="text" id="formacao-curso" placeholder="Ex: Graduação em Medicina">
+                                    </div>
+                                    <div class="input-group span-2-mobile" style="flex: 1;">
+                                        <label>Instituição / Ano</label>
+                                        <input type="text" id="formacao-inst" placeholder="Ex: USP - 2010">
+                                    </div>
+                                    <div class="input-group" style="justify-content: flex-end;">
+                                        <button type="button" id="btn-add-formacao" class="btn-add-service" style="background-color: var(--azul-escuro);">
+                                            <i class="fa-solid fa-plus"></i> Adicionar
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="formacao-container" class="services-container">
+                                <!-- Cards de Formação via JS -->
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SEÇÃO 4: LOCALIZAÇÃO & CONTATO -->
+                <section class="form-section">
+                    <h3><i class="fa-solid fa-location-dot"></i> Localização & Contato</h3>
+                    
+                    <div class="input-group full-width mb-3">
+                        <label>Modalidades de Atendimento</label>
+                        <div class="tags-selection">
+                            <label class="tag-checkbox">
+                                <input type="checkbox" checked value="Presencial">
+                                <span><i class="fa-solid fa-building-user"></i> Presencial</span>
+                            </label>
+                            <label class="tag-checkbox">
+                                <input type="checkbox" value="Telemedicina">
+                                <span><i class="fa-solid fa-video"></i> Telemedicina</span>
+                            </label>
+                            <label class="tag-checkbox">
+                                <input type="checkbox" value="Domiciliar">
+                                <span><i class="fa-solid fa-house-medical"></i> Domiciliar</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-grid">
+                        <div class="input-group span-2">
+                            <label>Endereço do Consultório</label>
+                            <input type="text" id="endereco" value="Av. Paulista, 1000 - Conjunto 42">
+                        </div>
+                        <div class="input-group">
+                            <label>Bairro</label>
+                            <input type="text" id="bairro" value="Bela Vista">
+                        </div>
+                        <div class="input-group">
+                            <label>Cidade/UF</label>
+                            <input type="text" id="cidade" value="São Paulo - SP">
+                        </div>
+                        <div class="input-group span-2">
+                            <label>Telefone de Contato</label>
+                            <input type="tel" id="telefone" value="(11) 99999-9999">
+                        </div>
+
+                        <!-- NOVO: HORÁRIO DE FUNCIONAMENTO -->
+                        <div class="input-group">
+                            <label>Horário (Segunda a Sexta)</label>
+                            <input type="text" id="horario-semana" value="08:00 às 18:00">
+                        </div>
+                        <div class="input-group">
+                            <label>Horário (Finais de Semana)</label>
+                            <input type="text" id="horario-fim-semana" value="Sáb: 08:00 às 12:00">
+                        </div>
+                    </div>
+                </section>
+
+                <!-- SEÇÃO 5: CONVÊNIOS -->
+                <section class="form-section">
+                    <h3><i class="fa-solid fa-notes-medical"></i> Convênios Aceitos</h3>
+                    <div class="tags-selection" id="convenios-container">
+                        <label class="tag-checkbox blue-theme">
+                            <input type="checkbox" checked value="Unimed">
+                            <span>Unimed</span>
+                        </label>
+                        <label class="tag-checkbox blue-theme">
+                            <input type="checkbox" checked value="Bradesco Saúde">
+                            <span>Bradesco Saúde</span>
+                        </label>
+                        <label class="tag-checkbox blue-theme">
+                            <input type="checkbox" value="Amil">
+                            <span>Amil</span>
+                        </label>
+                        <label class="tag-checkbox blue-theme">
+                            <input type="checkbox" value="SulAmérica">
+                            <span>SulAmérica</span>
+                        </label>
+                        <label class="tag-checkbox blue-theme">
+                            <input type="checkbox" value="Porto Seguro">
+                            <span>Porto Seguro</span>
+                        </label>
+                        <label class="tag-checkbox blue-theme">
+                            <input type="checkbox" value="NotreDame Intermédica">
+                            <span>NotreDame Intermédica</span>
+                        </label>
+                         <label class="tag-checkbox blue-theme">
+                            <input type="checkbox" value="Hapvida">
+                            <span>Hapvida</span>
+                        </label>
+                        <label class="tag-checkbox blue-theme">
+                            <input type="checkbox" value="Golden Cross">
+                            <span>Golden Cross</span>
+                        </label>
+                        <label class="tag-checkbox blue-theme">
+                            <input type="checkbox" value="Allianz">
+                            <span>Allianz</span>
+                        </label>
+                        <label class="tag-checkbox blue-theme">
+                            <input type="checkbox" value="Omint">
+                            <span>Omint</span>
+                        </label>
+                        <label class="tag-checkbox blue-theme">
+                            <input type="checkbox" value="IPASGO">
+                            <span>IPASGO</span>
+                        </label>
+                        <label class="tag-checkbox blue-theme">
+                            <input type="checkbox" value="CASSI">
+                            <span>CASSI</span>
+                        </label>
+                    </div>
+                </section>
+
+                <!-- BOTÕES -->
+                <div class="form-actions">
+                    <button type="button" class="btn-cancel">Cancelar</button>
+                    <button type="submit" class="btn-save">Salvar Alterações</button>
+                </div>
+
+            </form>
+        </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <img src="{{ url_for('static', filename='img/logoBranco.png') }}" alt="LogoBranca Bem Na Hora" class="footer-logo">
+                </div>
+
+                <div>
+                    <h4 class="footer-title">Links Rápidos</h4>
+                    <ul class="footer-list">
+                        <li><a href="#" class="footer-link">Sobre Nós</a></li>
+                        <li><a href="#" class="footer-link">Consultas</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="footer-title">Contato</h4>
+                    <ul class="footer-list">
+                        <li class="footer-contact">✉️ contato@bemnahora.com</li>
+                        <li class="footer-contact">📞 (61) 98234-5678</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="footer-title">Redes Sociais</h4>
+                    <ul class="socials">
+                        <li><a href="#" id="insta" class="social-link"><i class="fab fa-instagram"></i></a></li>
+                        <li><a href="#" id="twi" class="social-link"><i class="fab fa-twitter"></i></a></li>
+                        <li><a href="#" id="face" class="social-link"><i class="fab fa-facebook-f"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-copy">&copy; 2025 Bem Na Hora. Todos os direitos reservados.</div>
+        </div>
+    </footer>
+
+    <!-- JS EXTERNO -->
+    <script src="{{ url_for('static', filename='doutorEditar/doutorEditar.js') }}"></script>
+    <script src="{{ url_for('static', filename='header.js') }}"></script>
+</body>
+</html>

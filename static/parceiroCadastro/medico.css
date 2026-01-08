@@ -1,0 +1,680 @@
+/* Importação da fonte */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
+
+/* Reset Básico */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Cores utilizadas na página */
+:root {
+    --azul-principal: #00A7E1;
+    --preto: #00171F;
+    --turques: #003459;
+    --azul-escuro: #007EA7;
+    --branco: #FFFFFF;
+
+    --background: #d8e6f0;
+
+    --text-main: var(--preto);
+    --text-secondary: var(--azul-escuro);
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: #F7FAFC;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-image: url(../img/background.png);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* HEADER */
+.header {
+    background-color: #ffffff;
+    height: 90px;
+    display: flex;
+    border-radius: 10px;
+    border-bottom: 1px solid #00171f31;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    justify-content: space-between;
+    padding: 0 50px;
+}
+
+.logo img {
+    height: 80px;
+    width: auto;
+}
+
+.nav {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.nav a {
+    justify-content: center;
+    width: 140px;
+    height: 90px;
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+    transition: background-color 0.3s, color 0.3s;
+    text-decoration: none;
+    color: var(--text-main);
+}
+
+.nav-button1 {
+    background-color: transparent;
+    text-align: center;
+    border-bottom: 4px solid var(--azul-principal);
+}
+
+.nav-button1:hover {
+    background-color: var(--azul-principal);
+    color: var(--branco);
+}
+
+.nav-button2 {
+    background-color: transparent;
+    text-align: center;
+    border-bottom: 4px solid var(--azul-escuro);
+}
+
+.nav-button2:hover {
+    background-color: var(--azul-escuro);
+    color: var(--branco);
+}
+
+.nav-button3 {
+    background-color: transparent;
+    text-align: center;
+    border-bottom: 4px solid var(--turques);
+}
+
+.nav-button3:hover {
+    background-color: var(--turques);
+    color: var(--branco);
+}
+
+
+.header-spacer {
+    width: 200px;
+    flex-shrink: 0;
+}
+
+/* --- ESTILO DO CONTAINER PRINCIPAL E CARD (AGORA 35/65) --- */
+
+.main-container {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    /* Alinha o card no centro verticalmente */
+    align-items: center;
+    padding: 20px;
+}
+
+.card {
+    display: flex;
+    width: 1000px;
+    background-color: #ffffff;
+    border-radius: 40px;
+    min-height: 700px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 30, 95, 0.712);
+}
+
+/* Seção Branca: Formulário (65% da largura do card) */
+.form-container {
+    /* 🎯 CORREÇÃO DA LARGURA: 100% - 35% = 65% */
+    width: 65%;
+    transition: none;
+    display: flex;
+    position: relative;
+
+    /* CRÍTICO: Flexbox para centralizar o formulário dentro desta seção */
+    display: flex;
+    flex-grow: 1;
+}
+
+.form {
+    width: 100%;
+    /* Removido o display:flex aqui, usaremos o partner-section */
+    padding: 50px 60px;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    transition: none;
+}
+
+/* Seção Azul Royal: (35% da largura do card, fica na esquerda, arredondamento na direita) */
+.register-royal {
+    order: -1;
+    width: 35%;
+    /* LARGURA MANTIDA em 35% */
+    background-color: #003459;
+    color: white;
+
+    /* Arredondamento da direita (Superior Direita, Inferior Direita) */
+    border-radius: 0 40px 40px 0;
+
+    transition: none;
+    overflow: hidden;
+    position: relative;
+    flex-shrink: 0;
+}
+
+/* Conteúdo Royal: Fixo e centrado */
+.royal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 80%;
+    max-width: 400px;
+    opacity: 1;
+    z-index: 10;
+}
+
+.royal-content h3 {
+    font-size: 2.3rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
+
+.royal-content p {
+    font-size: 0.95rem;
+    margin-top: 10px;
+    margin-bottom: 15px;
+    line-height: 1.4;
+}
+
+/* --- ESTILO DE CAMPOS E BOTÕES GERAIS --- */
+
+.title {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #007ea7;
+    margin-bottom: 25px;
+}
+
+.main-form {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.main-form input,
+.main-form select {
+    width: 100%;
+    padding: 12px 20px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    font-size: 1rem;
+    background-color: #f7f7f7;
+    outline-color: #007ea7;
+    appearance: none;
+}
+
+.btn-submit {
+    width: 150px;
+    padding: 12px;
+    background-color: #007ea7;
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
+    box-shadow: 0 5px 15px rgba(47, 152, 201, 0.3);
+}
+
+.btn-submit:hover {
+    background-color: #003459;
+    transform: translateY(-2px);
+}
+
+/* --- ESTILO DE GRID E LARGURA TOTAL DO FORMULÁRIO DE PARCEIRO --- */
+
+.partner-section {
+    position: relative;
+    opacity: 1;
+    pointer-events: auto;
+
+    /* 🎯 CENTRALIZAÇÃO DO FORMULÁRIO DENTRO DA SEÇÃO BRANCA */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    /* Centraliza verticalmente (no centro) */
+    align-items: center;
+    /* Centraliza horizontalmente (no meio) */
+
+    height: 100%;
+    width: 100%;
+    padding: 30px 60px;
+    overflow-y: auto;
+}
+
+.main-form.register-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px 20px;
+    /* Define uma largura máxima para o formulário para centralizá-lo */
+    max-width: 450px;
+    margin: 0 auto;
+    /* Não é mais estritamente necessário devido ao align-items: center, mas ajuda */
+}
+
+/* **REGRA PARA LARGURA TOTAL** (Nome, Email, CRM, Senha, Checkbox, Botão) */
+.partner-section input[type="text"]:first-child,
+.partner-section input[type="email"],
+.partner-section input[placeholder="CRM/CRO/CRF"],
+.partner-section input[type="password"],
+.partner-section .terms-checkbox,
+.partner-section .register-submit {
+    grid-column: span 2;
+}
+
+/* Campos que ficam lado a lado (1 coluna cada) */
+.partner-section input[placeholder="CNPJ"],
+.partner-section input[type="tel"] {
+    grid-column: span 1;
+}
+
+/* Estilo do Checkbox e link */
+.terms-checkbox {
+    display: flex;
+    align-items: center;
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 5px;
+}
+
+.terms-checkbox input[type="checkbox"] {
+    width: 20px !important;
+    height: 20px !important;
+    min-width: 20px;
+    padding: 0 !important;
+    margin-right: 10px;
+    margin-bottom: 0;
+    border-radius: 4px;
+    cursor: pointer;
+    flex-shrink: 0;
+    appearance: none;
+    -webkit-appearance: none;
+    border: 1px solid #007ea7;
+}
+
+.terms-checkbox input[type="checkbox"]:checked {
+    background-color: #007ea7;
+    background-image: url("data:image/svg+xml,%3csvg viewBox='0 0 16 16' fill='white' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M12.207 4.793a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0l-2-2a1 1 0 011.414-1.414L6.5 9.086l4.293-4.293a1 1 0 011.414 0z'/%3e%3c/svg%3e");
+}
+
+.terms-link {
+    color: #007ea7;
+    font-weight: 600;
+}
+
+.register-submit {
+    margin-top: 25px;
+    width: 180px;
+}
+
+/* --- ESTILO DO MODAL DE TERMOS DE USO (manter para o link funcionar) --- */
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 23, 31, 0.7);
+    z-index: 2000;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.modal-overlay.show {
+    display: flex;
+    opacity: 1;
+}
+
+.modal-card {
+    background-color: #ffffff;
+    width: 450px;
+    height: 80vh;
+    max-height: 700px;
+    border-radius: 30px;
+    padding: 40px;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+    transform: translateY(20px);
+    transition: transform 0.3s ease;
+}
+
+.modal-overlay.show .modal-card {
+    transform: translateY(0);
+}
+
+.modal-title {
+    font-size: 1.8rem;
+    color: var(--azul-escuro);
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.modal-body {
+    flex-grow: 1;
+    overflow-y: auto;
+    padding-right: 10px;
+    font-size: 0.9rem;
+    color: #555;
+    line-height: 1.6;
+}
+
+.close-modal {
+    position: absolute;
+    top: 20px;
+    right: 25px;
+    background: transparent;
+    border: none;
+    font-size: 2rem;
+    color: #999;
+    cursor: pointer;
+    transition: color 0.2s;
+    line-height: 1;
+}
+
+/* --- ADAPTAÇÃO DO SEU TOGGLE PARA O FUNDO AZUL --- */
+.filter-group-royal {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+    margin-bottom: 10px;
+}
+
+.type-toggle-container {
+    position: relative;
+    /* Fundo translúcido para combinar com o Royal Blue */
+    background-color: rgba(0, 0, 0, 0.25);
+    border-radius: 30px;
+    display: flex;
+    padding: 4px;
+    cursor: pointer;
+    width: 240px;
+    /* Largura fixa para ficar bonito */
+}
+
+.type-toggle-container input {
+    display: none;
+}
+
+.type-toggle-container label {
+    flex: 1;
+    text-align: center;
+    padding: 10px;
+    z-index: 2;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 600;
+    /* Texto inativo (branco meio transparente) */
+    color: rgba(255, 255, 255, 0.7);
+    transition: color 0.3s;
+}
+
+.toggle-background {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    width: calc(50% - 4px);
+    height: calc(100% - 8px);
+    background-color: #FFFFFF;
+    /* Pílula Branca */
+    border-radius: 25px;
+    transition: transform 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+/* Lógica de Animação */
+#type-pro:checked~.toggle-background {
+    transform: translateX(0);
+}
+
+#type-clinic:checked~.toggle-background {
+    transform: translateX(100%);
+}
+
+/* Cor do texto quando ativo (Azul Escuro para contrastar com a pílula branca) */
+#type-pro:checked+label,
+#type-clinic:checked+label {
+    color: #003459;
+}
+
+
+/* --- CORREÇÃO DO GRID DO FORMULÁRIO --- */
+
+.main-form.register-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    /* Duas colunas iguais */
+    gap: 15px;
+    /* Espaço entre os inputs */
+    max-width: 500px;
+    width: 100%;
+    margin: 0 auto;
+}
+
+/* Força item a ocupar 2 colunas (Nome, Email, Botão) */
+.input-full {
+    grid-column: span 2;
+    width: 100%;
+}
+
+/* Força item a ocupar 1 coluna (CPF, Telefone, Senha) */
+.input-half {
+    grid-column: span 1;
+    width: 100%;
+}
+
+/* Ajuste nos Inputs para garantir alinhamento */
+.main-form input {
+    margin-bottom: 0;
+    /* O gap do grid já cuida do espaçamento */
+    width: 100%;
+    box-sizing: border-box;
+    /* Garante que padding não estoure o tamanho */
+}
+
+/* Ajuste específico para o Botão e Checkbox ficarem bonitos */
+.register-submit {
+    justify-self: center;
+    /* Centraliza o botão no meio das 2 colunas */
+    width: 50%;
+    /* Tamanho do botão */
+    grid-column: span 2;
+    margin-top: 10px;
+}
+
+.terms-checkbox {
+    justify-self: center;
+    margin-top: 5px;
+}
+
+@media screen and (max-width: 1440px) {
+
+    /* HEADER */
+    .header {
+        height: 60px;
+        padding: 0 25px;
+    }
+
+    .logo img {
+        height: 100%;
+        max-height: 50px;
+        width: auto;
+    }
+
+    .nav a {
+        height: 60px;
+        width: 110px;
+        font-size: 0.85rem;
+    }
+
+    .header-spacer {
+        width: 100px;
+    }
+
+    /* 2. CARD PRINCIPAL (Proporção 3:2) */
+    .main-container {
+        padding-top: 15px;
+        /* Margem superior/inferior para o card flutuar */
+        padding-bottom: 15px;
+        align-items: center;
+    }
+
+    .card {
+        /* Ajuste de Proporção sugerido */
+        width: 750px;
+        min-height: 500px;
+        /* Sua escolha */
+    }
+
+    /* 3. PADDING INTERNO */
+    .form,
+    .register-section {
+        /* Padding lateral 35px equilibra com a largura de 750px */
+        padding: 10px 35px;
+    }
+
+    .title {
+        font-size: 1.4rem;
+        margin-bottom: 10px;
+    }
+
+    .royal-content h3 {
+        font-size: 1.4rem;
+        margin-bottom: 5px;
+    }
+
+    .royal-content p {
+        font-size: 0.8rem;
+        margin-bottom: 15px;
+        line-height: 1.2;
+    }
+
+    /* 4. INPUTS E SELECTS (Compactos mas com leve respiro) */
+    .main-form input,
+    .main-form select,
+    .register-grid input,
+    .register-grid select,
+    .custom-select {
+        padding: 0 12px;
+
+        /* Mantive 32px para garantir que não role a tela */
+        height: 32px !important;
+
+        /* Aumentei levemente de 6px para 8px pois temos 40px extras de altura agora */
+        margin-bottom: 8px;
+
+        font-size: 0.8rem !important;
+
+        line-height: 32px;
+        display: flex;
+        align-items: center;
+        border-radius: 6px;
+    }
+
+    /* Ajuste da lista do convênio */
+    .custom-options {
+        top: 34px;
+        /* 32px do input + 2px borda */
+        max-height: 180px;
+        overflow-y: auto;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    .custom-options li {
+        padding: 8px 12px;
+        font-size: 0.8rem;
+    }
+
+    /* Reset inputs normais */
+    .register-grid input,
+    .main-form input,
+    .main-form select {
+        display: block;
+        line-height: normal;
+    }
+
+    .register-grid select {
+        padding-right: 20px;
+    }
+
+    /* 5. CHECKBOX E BOTÕES */
+    .terms-checkbox {
+        font-size: 0.7rem;
+        margin-top: 5px;
+    }
+
+    .terms-checkbox input[type="checkbox"] {
+        width: 16px !important;
+        height: 16px !important;
+        min-width: 16px;
+    }
+
+    .btn-submit,
+    .btn-register {
+        padding: 0 20px;
+        height: 36px;
+        font-size: 0.85rem;
+        margin-top: 5px;
+    }
+
+    /* 6. GRID */
+    .register-grid {
+        /* Gap vertical de 8px (antes era 6px) fica mais bonito */
+        gap: 8px 15px;
+    }
+
+    .register-submit {
+        margin-top: 10px;
+        width: 100%;
+    }
+
+    .forgot-password {
+        margin-bottom: 10px;
+        font-size: 0.75rem;
+    }
+
+    .separator {
+        font-size: 0.75rem;
+        margin-bottom: 5px;
+    }
+
+    .separator.top-space {
+        margin-top: 5px;
+    }
+}

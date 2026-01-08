@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil - {% if profissional %}{{ profissional.nome }}{% else %}Profissional{% endif %} | Bem Na Hora</title>
+    <link rel="icon" href="{{ url_for('static', filename='img/relogio.png') }}">
+    
+    <!-- Fonte Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <!-- CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='doutorPerfil/doutorPerfil.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='global.css') }}">
+    
+</head>
+<body>
+
+    <!-- HEADER (Padrão) -->
+    <header class="header">
+        <div class="logo">
+            <a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='img/logo.png') }}" alt="Bem Na Hora"></a>
+        </div>
+        <nav class="nav">
+            <a href="#" class="nav-button1">Saiba mais</a>
+            <a href="{{ url_for('vitrine') }}" class="nav-button2">Consultas</a>
+            <a href="{{ url_for('cadastro_parceiro') }}" class="nav-button3">Torne-se<br>Parceiro</a>
+        </nav>
+        {% if usuario_logado %}
+        <div class="profile-pic">
+            <img src="{% if foto_perfil_usuario %}{{ url_for('static', filename='uploads/' + foto_perfil_usuario) }}{% else %}https://cdn-icons-png.flaticon.com/512/3135/3135715.png{% endif %}" alt="Perfil">
+            <div class="dropdown-menu">
+                {% if tipo_usuario == 'usuario' %}
+                    <a href="{{ url_for('perfil_usuario') }}" class="dropdown-item">Meu Perfil</a>
+                {% elif tipo_usuario == 'profissional' %}
+                    <a href="{{ url_for('doutor_editar') }}" class="dropdown-item">Editar Anúncio</a>
+                {% elif tipo_usuario == 'clinica' %}
+                    <a href="{{ url_for('clinica_editar') }}" class="dropdown-item">Editar Anúncio</a>
+                {% endif %}
+                <a href="{{ url_for('agenda') }}" class="dropdown-item">Agenda</a>
+                <button class="dropdown-item" onclick="logout()">Sair</button>
+            </div>
+        </div>
+        {% else %}
+        <a href="{{ url_for('cadastro_usuario') }}" class="btn-login">Login</a>
+        {% endif %}
+    </header>
+
+    <!-- FUNDO DECORATIVO (Background atrás do card principal) -->
+    <div class="profile-background">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+    </div>
+
+    <main class="profile-container">
+        
+        <!-- CARD PRINCIPAL (Hero) -->
+        <section class="profile-card">
+            <div class="profile-content-wrapper">
+                
+                <!-- Coluna Esquerda: Foto e Status -->
+                <div class="profile-left">
+                    <div class="avatar-container">
+                        {% if profissional.foto_perfil %}
+                        <img src="{{ url_for('static', filename='uploads/' + profissional.foto_perfil) }}" alt="{{ profissional.nome }}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+                        {% else %}
+                        <div class="avatar-placeholder">
+                            <i class="fa-solid fa-user-doctor"></i>
+                        </div>
+                        {% endif %}
+                        <div class="status-badge">
+                            <i class="fa-solid fa-check-circle"></i> Agenda Aberta
+                        </div>
+                    </div>
+                    
+                    <div class="location-mobile">
+                        <i class="fa-solid fa-location-dot"></i> {% if profissional.cidade %}{{ profissional.cidade }}{% if profissional.estado %}, {{ profissional.estado }}{% endif %}{% else %}Localização não informada{% endif %}
+                    </div>
+                </div>
+
+                <!-- Coluna Direita: Informações -->
+                <div class="profile-right">
+                    <div class="profile-header">
+                        <div class="name-area">
+                            <h1>{% if profissional.nome %}{{ profissional.nome }}{% else %}Profissional{% endif %}</h1>
+                            <div class="social-links">
+                                {% if profissional.site_url %}<a href="{{ profissional.site_url }}" target="_blank" title="Site Web"><i class="fa-solid fa-globe"></i></a>{% endif %}
+                                {% if profissional.instagram %}<a href="https://instagram.com/{{ profissional.instagram }}" target="_blank" title="Instagram"><i class="fa-brands fa-instagram"></i></a>{% endif %}
+                            </div>
+                        </div>
+                        
+                        <div class="action-buttons">
+                            <button class="btn-primary"><i class="fa-brands fa-whatsapp"></i> Contatar</button>
+                            <button class="btn-secondary"><i class="fa-solid fa-share-nodes"></i> Compartilhar</button>
+                        </div>
+                    </div>
+
+                    <!-- Dados Rápidos (Role/Experience na ref) -->
+                    <div class="quick-stats">
+                        <div class="stat-item">
+                            <span class="stat-label">Especialidade</span>
+                            <span class="stat-value">{% if profissional.especialidades_list %}{{ profissional.especialidades_list|join(', ') }}{% else %}Não informado{% endif %}</span>
+                        </div>
+                        {% if profissional.registro_conselho %}
+                        <div class="stat-item">
+                            <span class="stat-label">Registro</span>
+                            <span class="stat-value">{{ profissional.registro_conselho }}</span>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <!-- Tags (Superpower Skills na ref) -->
+                    {% if profissional.convenios_list %}
+                    <div class="skills-section">
+                        <span class="stat-label">Convênios Aceitos</span>
+                        <div class="tags-list">
+                            {% for convenio in profissional.convenios_list %}
+                            <span class="pill">{{ convenio }}</span>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </section>
+
+        <!-- NAVEGAÇÃO EM ABAS (Tabs) -->
+        <nav class="profile-tabs">
+            <ul>
+                <li class="active" onclick="switchTab('sobre')">Sobre</li>
+                <li onclick="switchTab('servicos')">Serviços e Preços</li>
+                <li onclick="switchTab('avaliacoes')">Avaliações ({{ profissional.media_avaliacao|default(0) }})</li>
+                <li onclick="switchTab('local')">Localização</li>
+            </ul>
+        </nav>
+
+        <!-- CONTEÚDO DAS ABAS -->
+        <section class="tab-content" id="content-area">
+            
+            <!-- Conteúdo: Sobre (Visível por padrão) -->
+            <div id="sobre" class="tab-pane active-pane">
+                {% if profissional.biografia %}
+                <h2 class="section-title">Minha História</h2>
+                <div class="text-content">
+                    <p>{{ profissional.biografia|replace('\n', '</p><p>')|safe }}</p>
+                </div>
+                {% endif %}
+
+                {% if profissional.formacoes_list %}
+                <h3 class="subsection-title">Formação Acadêmica</h3>
+                <ul class="timeline-list">
+                    {% for formacao in profissional.formacoes_list %}
+                    <li>
+                        <strong>{{ formacao.curso }}</strong>
+                        <span>{{ formacao.instituicao }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% endif %}
+            </div>
+
+            <!-- Conteúdo: Serviços e Preços -->
+            <div id="servicos" class="tab-pane">
+                <h2 class="section-title">Serviços Oferecidos</h2>
+                <div class="services-list">
+                    {% if profissional.servicos_list %}
+                        {% for servico in profissional.servicos_list %}
+                        <div class="service-item">
+                            <div class="service-info">
+                                <h4>{{ servico.nome }}</h4>
+                            </div>
+                            <div class="service-price">
+                                <span>R$ {{ servico.preco }}</span>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p style="text-align: center; color: #777; padding: 40px;">Nenhum serviço cadastrado.</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Conteúdo: Avaliações -->
+            <div id="avaliacoes" class="tab-pane">
+                <div class="reviews-summary">
+                    <div class="big-score">{{ profissional.media_avaliacao|default(0) }}</div>
+                    <div class="score-stars">
+                        {% for i in range(5) %}
+                            {% if profissional.media_avaliacao >= i+1 %}
+                                <i class="fa-solid fa-star"></i>
+                            {% elif profissional.media_avaliacao >= i+0.5 %}
+                                <i class="fa-solid fa-star-half-stroke"></i>
+                            {% else %}
+                                <i class="fa-regular fa-star"></i>
+                            {% endif %}
+                        {% endfor %}
+                        <span>({{ profissional.total_avaliacoes|default(0) }} Avaliações)</span>
+                    </div>
+                </div>
+
+                <div class="reviews-grid">
+                    {% if profissional.avaliacoes_recentes %}
+                        {% for avaliacao in profissional.avaliacoes_recentes %}
+                        <div class="review-card">
+                            <div class="review-header">
+                                <div class="reviewer-avatar">{{ avaliacao.nome_usuario[0].upper() }}</div>
+                                <div class="reviewer-data">
+                                    <strong>{{ avaliacao.nome_usuario }}</strong>
+                                    <div class="small-stars">
+                                        {% for i in range(5) %}
+                                            {% if avaliacao.nota >= i+1 %}
+                                                <i class="fa-solid fa-star"></i>
+                                            {% else %}
+                                                <i class="fa-regular fa-star"></i>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <span class="review-date">{{ avaliacao.data_avaliacao.strftime('%d/%m/%Y') if avaliacao.data_avaliacao else 'Data não informada' }}</span>
+                            </div>
+                            <p class="review-text">"{{ avaliacao.comentario }}"</p>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p style="text-align: center; color: #777; padding: 40px;">Nenhuma avaliação disponível.</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Conteúdo: Localização -->
+            <div id="local" class="tab-pane">
+                <h2 class="section-title">Localização e Contato</h2>
+                <div class="location-container">
+                    <div id="map-container" style="position: relative; width: 100%; height: 300px;">
+                        <div id="map" 
+                            class="map-style"
+                            style="width: 100%; height: 100%; z-index: 1;"
+                            data-endereco="{{ profissional.endereco }}" 
+                            data-bairro="{{ profissional.bairro }}" 
+                            data-cidade="{{ profissional.cidade }}" 
+                            data-estado="{{ profissional.estado }}">
+                        </div>
+                    </div>
+                    
+                    <div class="address-details">
+                        {% if profissional.endereco or profissional.bairro or profissional.cidade %}
+                        <div class="address-item">
+                            <i class="fa-solid fa-location-dot icon-box"></i>
+                            <div>
+                                <h4>Endereço</h4>
+                                {% if profissional.endereco %}<p>{{ profissional.endereco }}</p>{% endif %}
+                                {% if profissional.bairro or profissional.cidade %}
+                                <p>{% if profissional.bairro %}{{ profissional.bairro }}{% endif %}{% if profissional.bairro and profissional.cidade %}, {% endif %}{% if profissional.cidade %}{{ profissional.cidade }}{% endif %}{% if profissional.estado %} - {{ profissional.estado }}{% endif %}</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                        {% endif %}
+                        
+                        {% if profissional.horario_atendimento %}
+                        <div class="address-item">
+                            <i class="fa-regular fa-clock icon-box"></i>
+                            <div>
+                                <h4>Horários de Atendimento</h4>
+                                <p>{{ profissional.horario_atendimento|replace(' | ', '<br>')|safe }}</p>
+                            </div>
+                        </div>
+                        {% endif %}
+
+                        {% if profissional.telefone or profissional.email %}
+                        <div class="address-item">
+                            <i class="fa-solid fa-phone icon-box"></i>
+                            <div>
+                                <h4>Contatos</h4>
+                                {% if profissional.telefone %}<p>{{ profissional.telefone }}</p>{% endif %}
+                                {% if profissional.email %}<p>{{ profissional.email }}</p>{% endif %}
+                            </div>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- MODAL DE AVALIAÇÃO -->
+    <div id="modalAvaliacao" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Avaliar <span id="modalTipo"></span></h3>
+                <button class="modal-close" onclick="fecharModalAvaliacao()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="formAvaliacao">
+                    <div class="rating-section">
+                        <label>Quantas estrelas você dá?</label>
+                        <div class="star-rating" id="starRating">
+                            <i class="fa-regular fa-star" data-rating="1"></i>
+                            <i class="fa-regular fa-star" data-rating="2"></i>
+                            <i class="fa-regular fa-star" data-rating="3"></i>
+                            <i class="fa-regular fa-star" data-rating="4"></i>
+                            <i class="fa-regular fa-star" data-rating="5"></i>
+                        </div>
+                        <input type="hidden" id="ratingValue" name="nota" value="0">
+                    </div>
+                    <div class="comment-section">
+                        <label for="comentario">Comentário (opcional)</label>
+                        <textarea id="comentario" name="comentario" placeholder="Conte sua experiência..." maxlength="500"></textarea>
+                        <small id="charCount">0/500 caracteres</small>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="button" class="btn-cancel" onclick="fecharModalAvaliacao()">Cancelar</button>
+                        <button type="submit" class="btn-submit" id="btnSubmitAvaliacao">Enviar Avaliação</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <img src="{{ url_for('static', filename='img/logoBranco.png') }}" alt="LogoBranca Bem Na Hora" class="footer-logo">
+                </div>
+
+                <div>
+                    <h4 class="footer-title">Links Rápidos</h4>
+                    <ul class="footer-list">
+                        <li><a href="#" class="footer-link">Sobre Nós</a></li>
+                        <li><a href="#" class="footer-link">Consultas</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="footer-title">Contato</h4>
+                    <ul class="footer-list">
+                        <li class="footer-contact">✉️ contato@bemnahora.com</li>
+                        <li class="footer-contact">📞 (61) 98234-5678</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="footer-title">Redes Sociais</h4>
+                    <ul class="socials">
+                        <li><a href="#" id="insta" class="social-link"><i class="fab fa-instagram"></i></a></li>
+                        <li><a href="#" id="twi" class="social-link"><i class="fab fa-twitter"></i></a></li>
+                        <li><a href="#" id="face" class="social-link"><i class="fab fa-facebook-f"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-copy">&copy; 2025 Bem Na Hora. Todos os direitos reservados.</div>
+        </div>
+    </footer>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <script src="{{ url_for('static', filename='doutorPerfil/doutorPerfil.js') }}"></script>
+    <script src="{{ url_for('static', filename='header.js') }}"></script>
+</body>
+</html>

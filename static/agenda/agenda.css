@@ -1,0 +1,646 @@
+/* --- VARIÁVEIS --- */
+:root {
+    --azul-principal: #00A7E1;
+    --preto: #00171F;
+    --turques: #003459;
+    --azul-escuro: #007EA7;
+    --branco: #FFFFFF;
+    --bg-page: #F7FAFC;
+    --cinza-texto: #555;
+    --cinza-claro: #f0f2f5;
+    --borda: #e0e0e0;
+
+    /* Cores Médicos (Vibrantes) */
+    --doc-color-1: #00A7E1;
+    --doc-color-2: #E91E63;
+    --doc-color-3: #4CAF50;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--bg-page);
+    color: var(--preto);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* --- HEADER --- */
+.header {
+    background-color: #ffffff;
+    height: 90px;
+    border-bottom: 1px solid #00171f31;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 50px;
+    flex-shrink: 0;
+    /* Header não encolhe */
+    z-index: 100;
+}
+
+.logo img {
+    height: 100px;
+    width: auto;
+    padding: 15px 0;
+}
+
+.nav {
+    display: flex;
+    height: 100%;
+    align-items: center;
+}
+
+.nav a {
+    width: 140px;
+    height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    color: var(--preto);
+    transition: 0.3s;
+}
+
+.nav-button1 {
+    border-bottom: 4px solid var(--azul-principal);
+}
+
+.nav-button1:hover {
+    background-color: var(--azul-principal);
+    color: var(--branco);
+}
+
+.nav-button2 {
+    border-bottom: 4px solid var(--azul-escuro);
+}
+
+.nav-button2:hover {
+    background-color: var(--azul-escuro);
+    color: var(--branco);
+}
+
+.nav-button3 {
+    border-bottom: 4px solid var(--turques);
+}
+
+.nav-button3:hover {
+    background-color: var(--turques);
+    color: var(--branco);
+}
+
+/* Botão Login Corrigido (Sólido) */
+.btn-login {
+    padding: 10px 35px;
+    background-color: var(--azul-principal);
+    border: none;
+    color: white;
+    font-weight: 600;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: 0.3s;
+    font-size: 1rem;
+    font-family: 'Poppins', sans-serif;
+}
+
+.btn-login:hover {
+    background-color: var(--azul-escuro);
+}
+
+
+/* --- LAYOUT DA AGENDA --- */
+.agenda-layout {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+/* --- SIDEBAR --- */
+.agenda-sidebar {
+    width: 300px;
+    background-color: white;
+    border-right: 1px solid var(--borda);
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    overflow-y: auto;
+    flex-shrink: 0;
+}
+
+.btn-add-consulta {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--azul-principal);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 10px rgba(0, 167, 225, 0.2);
+    transition: 0.2s;
+}
+
+.btn-add-consulta:hover {
+    background-color: var(--azul-escuro);
+}
+
+/* Mini Calendar */
+.mini-calendar-wrapper {
+    margin-bottom: 20px;
+}
+
+.calendar-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: var(--turques);
+}
+
+.nav-arrows i {
+    cursor: pointer;
+    padding: 5px;
+    color: var(--cinza-texto);
+}
+
+.mini-calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 5px;
+    row-gap: 5px;
+    text-align: center;
+}
+
+.weekday {
+    font-size: 0.8rem;
+    color: #aaa;
+    margin-bottom: 5px;
+}
+
+.day {
+    font-size: 0.9rem;
+    padding: 6px 0;
+    height: 32px;
+    width: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: 0.2s;
+    position: relative;
+    z-index: 2;
+}
+
+.day:hover {
+    background-color: #f0f0f0;
+}
+
+.day.active {
+    background-color: var(--azul-principal);
+    color: white;
+}
+
+.day.prev-month {
+    color: #ccc;
+}
+
+/* Highlight Semana */
+.day.week-range {
+    background-color: #e0f7fa;
+    color: var(--turques);
+    border-radius: 0;
+    width: 100%;
+}
+
+.day.week-start {
+    border-top-left-radius: 50%;
+    border-bottom-left-radius: 50%;
+    background-color: var(--azul-principal);
+    color: white;
+}
+
+.day.week-end {
+    border-top-right-radius: 50%;
+    border-bottom-right-radius: 50%;
+    background-color: var(--azul-principal);
+    color: white;
+}
+
+.day.week-range.active {
+    background-color: var(--azul-principal);
+    color: white;
+}
+
+.divider {
+    height: 1px;
+    background-color: var(--borda);
+    margin: 20px 0;
+}
+
+/* Filtros */
+.filter-section h4 {
+    margin-bottom: 15px;
+    color: var(--turques);
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 12px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: var(--cinza-texto);
+    position: relative;
+    padding-left: 28px;
+}
+
+.checkbox-container input {
+    display: none;
+}
+
+.checkmark {
+    position: absolute;
+    left: 0;
+    height: 18px;
+    width: 18px;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+}
+
+.checkbox-container input:checked~.checkmark {
+    background-color: #ccc;
+    border-color: #ccc;
+}
+
+.checkbox-container input:checked~.checkmark::after {
+    content: "";
+    position: absolute;
+    left: 5px;
+    top: 1px;
+    width: 4px;
+    height: 9px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.checkbox-container input:checked~.checkmark.color-1 {
+    background-color: var(--doc-color-1);
+    border-color: var(--doc-color-1);
+}
+
+.checkbox-container input:checked~.checkmark.color-2 {
+    background-color: var(--doc-color-2);
+    border-color: var(--doc-color-2);
+}
+
+.checkbox-container input:checked~.checkmark.color-3 {
+    background-color: var(--doc-color-3);
+    border-color: var(--doc-color-3);
+}
+
+
+/* --- ÁREA PRINCIPAL --- */
+.agenda-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    background-color: var(--bg-page);
+    position: relative;
+    overflow: hidden;
+}
+
+.agenda-topbar {
+    padding: 15px 30px;
+    background-color: white;
+    border-bottom: 1px solid var(--borda);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.date-controls {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.date-controls h2 {
+    font-size: 1.2rem;
+    color: var(--preto);
+    min-width: 250px;
+    text-align: center;
+}
+
+.icon-btn {
+    border: 1px solid var(--borda);
+    background: transparent;
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    cursor: pointer;
+    color: var(--cinza-texto);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.icon-btn:hover {
+    background-color: #f0f0f0;
+}
+
+.today-badge {
+    background-color: #e0f2fe;
+    color: var(--azul-principal);
+    padding: 6px 15px;
+    border-radius: 20px;
+    border: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.view-mode {
+    background-color: #f0f0f0;
+    padding: 4px;
+    border-radius: 8px;
+    display: flex;
+}
+
+.mode-btn {
+    padding: 6px 20px;
+    border: none;
+    background: transparent;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    color: #666;
+}
+
+.mode-btn.active {
+    background-color: white;
+    color: var(--azul-principal);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+/* TIMELINE */
+.timeline-container {
+    flex: 1;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.timeline-header {
+    display: flex;
+    border-bottom: 1px solid var(--borda);
+    background: #fafafa;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.time-column {
+    width: 80px;
+    padding: 10px;
+    text-align: center;
+    border-right: 1px solid var(--borda);
+    font-weight: 600;
+    color: #888;
+    background: #fafafa;
+    flex-shrink: 0;
+}
+
+.events-column {
+    flex: 1;
+    padding: 10px;
+    font-weight: 600;
+    color: #888;
+    background: #fafafa;
+}
+
+/* Headers do Modo Semana */
+.timeline-header.week-mode .events-column {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    padding: 0;
+}
+
+.day-header-cell {
+    padding: 10px 5px;
+    text-align: center;
+    border-right: 1px solid #f0f0f0;
+    font-size: 0.9rem;
+}
+
+.day-header-cell.today {
+    color: var(--azul-principal);
+    background-color: #e0f2fe;
+}
+
+.timeline-body {
+    background-color: white;
+}
+
+.time-slot {
+    display: flex;
+    border-bottom: 1px solid #f0f0f0;
+    min-height: 100px;
+    height: auto;
+}
+
+/* Colunas do Modo Semana */
+.time-slot.week-mode .slot-events {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    padding: 0;
+}
+
+.day-cell {
+    border-right: 1px solid #f0f0f0;
+    padding: 5px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    max-height: 260px;
+    overflow: hidden;
+    position: relative;
+    transition: max-height 0.3s ease;
+}
+
+.day-cell.expanded,
+.slot-events.expanded {
+    max-height: none;
+    overflow: visible;
+    z-index: 10;
+    background: white;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    padding-bottom: 30px;
+}
+
+.slot-time {
+    width: 80px;
+    text-align: center;
+    color: #999;
+    font-size: 0.85rem;
+    padding-top: 15px;
+    border-right: 1px solid #f0f0f0;
+    flex-shrink: 0;
+}
+
+.slot-events {
+    flex: 1;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 260px;
+    overflow: hidden;
+    position: relative;
+    transition: max-height 0.3s ease;
+}
+
+/* CARD DE CONSULTA */
+.appointment-card {
+    position: relative;
+    /* Não usa absolute */
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 6px;
+    border-left: 4px solid;
+    font-size: 0.9rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+    background-color: white;
+    height: auto !important;
+    flex-shrink: 0;
+}
+
+.appointment-card:hover {
+    transform: translateY(-2px);
+    z-index: 5;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* CORES VIBRANTES */
+.app-card-doc1 {
+    background-color: #e1f5fe !important;
+    border-left-color: var(--doc-color-1) !important;
+    color: #01579b !important;
+}
+
+.app-card-doc2 {
+    background-color: #fce4ec !important;
+    border-left-color: var(--doc-color-2) !important;
+    color: #880e4f !important;
+}
+
+.app-card-doc3 {
+    background-color: #e8f5e9 !important;
+    border-left-color: var(--doc-color-3) !important;
+    color: #1b5e20 !important;
+}
+
+.card-top {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    margin-bottom: 4px;
+}
+
+.app-time {
+    font-weight: 700;
+    background: rgba(255, 255, 255, 0.5);
+    padding: 2px 5px;
+    border-radius: 4px;
+}
+
+.app-patient {
+    font-weight: 600;
+}
+
+.app-details {
+    font-size: 0.8rem;
+    opacity: 0.9;
+}
+
+.app-doctor {
+    font-size: 0.75rem;
+    margin-top: 5px;
+    display: block;
+    text-align: right;
+    font-weight: 600;
+}
+
+/* Cards Compactos (Modo Semana) */
+.appointment-card.compact {
+    padding: 6px;
+    font-size: 0.75rem;
+}
+
+.appointment-card.compact .app-doctor,
+.appointment-card.compact .app-details {
+    display: none;
+}
+
+/* Botão "Ver Mais" */
+.btn-show-more {
+    font-size: 0.75rem;
+    color: var(--azul-principal);
+    background: rgba(255, 255, 255, 0.9);
+    border: 1px solid var(--borda);
+    border-radius: 4px;
+    cursor: pointer;
+    text-align: center;
+    width: 100%;
+    padding: 4px;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+.btn-show-more:hover {
+    background-color: #f0f0f0;
+}
+
+/* Responsividade */
+@media (max-width: 900px) {
+    .agenda-sidebar {
+        display: none;
+    }
+
+    .agenda-layout {
+        flex-direction: column;
+    }
+
+    .timeline-header.week-mode .day-header-cell {
+        font-size: 0.7rem;
+    }
+}

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agenda - Bem Na Hora</title>
+
+    <link href="https://fonts.googleapis.com/css2?..." rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/..." >
+
+    <link rel="icon" href="{{ url_for('static', filename='img/relogio.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='agenda/agenda.css') }}">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='global.css') }}">
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+        <div class="logo">
+            <a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='img/logo.png') }}"></a>
+        </div>
+        <nav class="nav">
+            <a href="#" class="nav-button1">Saiba mais</a>
+            <a href="{{ url_for('vitrine') }}" class="nav-button2">Consultas</a>
+            <a href="{{ url_for('cadastro_parceiro') }}" class="nav-button3">Torne-se<br>Parceiro</a>
+        </nav>
+        {% if usuario_logado %}
+        <div class="profile-pic">
+            <img src="{% if foto_perfil_usuario %}{{ url_for('static', filename='uploads/' + foto_perfil_usuario) }}{% else %}https://cdn-icons-png.flaticon.com/512/3135/3135715.png{% endif %}" alt="Perfil">
+            <div class="dropdown-menu">
+                {% if tipo_usuario == 'usuario' %}
+                    <a href="{{ url_for('perfil_usuario') }}" class="dropdown-item">Meu Perfil</a>
+                {% elif tipo_usuario == 'profissional' %}
+                    <a href="{{ url_for('doutor_editar') }}" class="dropdown-item">Editar Anúncio</a>
+                {% elif tipo_usuario == 'clinica' %}
+                    <a href="{{ url_for('clinica_editar') }}" class="dropdown-item">Editar Anúncio</a>
+                {% endif %}
+                <button class="dropdown-item" onclick="logout()">Sair</button>
+            </div>
+        </div>
+        {% else %}
+        <a href="{{ url_for('cadastro_usuario') }}" class="btn-login">Login</a>
+        {% endif %}
+    </header>
+
+    <!-- CONTAINER PRINCIPAL -->
+    <div class="agenda-layout">
+
+        <!-- SIDEBAR -->
+        <aside class="agenda-sidebar">
+
+            <div class="sidebar-header">
+                <button class="btn-add-consulta">
+                    <i class="fa-solid fa-plus"></i> Novo Agendamento
+                </button>
+            </div>
+
+            <!-- Mini Calendário -->
+            <div class="mini-calendar-wrapper">
+                <div class="calendar-nav">
+                    <div class="nav-arrows">
+                        <i class="fa-solid fa-chevron-left" id="mini-prev"></i>
+                    </div>
+                    <span class="current-month">Dezembro 2025</span>
+                    <div class="nav-arrows">
+                        <i class="fa-solid fa-chevron-right" id="mini-next"></i>
+                    </div>
+                </div>
+                <div class="mini-calendar-grid">
+                    <!-- Gerado via JS -->
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <!-- Filtros -->
+            <div class="filter-section">
+                <h4><i class="fa-solid fa-user-doctor"></i> Profissionais</h4>
+                <div class="filter-options">
+                    <label class="checkbox-container">
+                        <input type="checkbox" checked id="filter-all">
+                        <span class="checkmark"></span>
+                        Todos
+                    </label>
+                    <label class="checkbox-container">
+                        <input type="checkbox" checked value="Dr. Carlos" class="doc-filter">
+                        <span class="checkmark color-1"></span>
+                        Dr. Carlos (Cardio)
+                    </label>
+                    <label class="checkbox-container">
+                        <input type="checkbox" checked value="Dra. Ana" class="doc-filter">
+                        <span class="checkmark color-2"></span>
+                        Dra. Ana (Dermato)
+                    </label>
+                    <label class="checkbox-container">
+                        <input type="checkbox" checked value="Dr. Roberto" class="doc-filter">
+                        <span class="checkmark color-3"></span>
+                        Dr. Roberto (Orto)
+                    </label>
+                </div>
+            </div>
+        </aside>
+
+        <!-- ÁREA PRINCIPAL -->
+        <main class="agenda-main">
+
+            <div class="agenda-topbar">
+                <div class="date-controls">
+                    <button class="icon-btn" id="btn-prev-day"><i class="fa-solid fa-chevron-left"></i></button>
+                    <h2 id="display-data">Carregando...</h2>
+                    <button class="icon-btn" id="btn-next-day"><i class="fa-solid fa-chevron-right"></i></button>
+                    <button class="today-badge" id="btn-today">Hoje</button>
+                </div>
+
+                <div class="view-mode">
+                    <button class="mode-btn active" id="mode-dia">Dia</button>
+                    <button class="mode-btn" id="mode-semana">Semana</button>
+                </div>
+            </div>
+
+            <div class="timeline-container">
+                <div class="timeline-header">
+                    <div class="time-column">Horário</div>
+                    <div class="events-column" id="header-events">Agenda</div>
+                </div>
+
+                <div class="timeline-body" id="timeline-body">
+                    <!-- Gerado via JS -->
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script src="{{ url_for('static', filename='agenda/agenda.js') }}"></script>
+    <script src="{{ url_for('static', filename='header.js') }}"></script>
+</body>
+
+</html>

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel de Usuário</title>
+  <link rel="icon" href="{{ url_for('static', filename='img/relogio.png') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='perfil/perfil.css') }}">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='global.css') }}">
+</head>
+
+<body>
+
+  <header class="header">
+    <div class="logo">
+      <a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='img/logo.png') }}" alt="Bem Na Hora"></a>
+    </div>
+    <nav class="nav">
+      <a href="#" class="nav-button1">Saiba mais</a>
+      <a href="{{ url_for('vitrine') }}" class="nav-button2">Consultas</a>
+      <a href="{{ url_for('cadastro_parceiro') }}" class="nav-button3">Torne-se<br>Parceiro</a>
+    </nav>
+    {% if usuario_logado %}
+    <div class="profile-pic">
+      <img src="{% if foto_perfil_usuario %}{{ url_for('static', filename='uploads/' + foto_perfil_usuario) }}{% else %}https://cdn-icons-png.flaticon.com/512/3135/3135715.png{% endif %}" alt="Perfil">
+      <div class="dropdown-menu">
+        {% if tipo_usuario == 'usuario' %}
+            <a href="{{ url_for('perfil_usuario') }}" class="dropdown-item">Meu Perfil</a>
+        {% elif tipo_usuario == 'profissional' %}
+            <a href="{{ url_for('doutor_editar') }}" class="dropdown-item">Editar Anúncio</a>
+        {% elif tipo_usuario == 'clinica' %}
+            <a href="{{ url_for('clinica_editar') }}" class="dropdown-item">Editar Anúncio</a>
+        {% endif %}
+        <a href="{{ url_for('agenda') }}" class="dropdown-item">Agenda</a>
+        <button class="dropdown-item" onclick="logout()">Sair</button>
+      </div>
+    </div>
+    {% else %}
+    <a href="{{ url_for('cadastro_usuario') }}" class="btn-login">Login</a>
+    {% endif %}
+  </header>
+
+  <div class="content-body">
+
+    <aside class="sidebar-card">
+
+      <div class="profile-header">
+        <div class="avatar-wrapper">
+          <img id="ftPerfil" src="{% if usuario and usuario.foto_perfil %}{{ url_for('static', filename='uploads/' + usuario.foto_perfil) }}{% else %}https://cdn-icons-png.flaticon.com/512/3135/3135715.png{% endif %}" alt="Avatar do Usuário">
+          <label for="upload-photo" class="edit-icon-img"><i class="fas fa-camera"></i></label>
+          <input type="file" id="upload-photo" accept="image/*">
+        </div>
+        <h2>{% if usuario %}{{ usuario.nome }}{% else %}Usuário{% endif %}</h2>
+        <span class="badge">{% if usuario and usuario.convenio_nome %}{{ usuario.convenio_nome }} - Ativo{% else %}Sem convênio{% endif %}</span>
+      </div>
+
+      <hr class="divider">
+
+      <div class="sidebar-info-section" id="personal-data-section">
+        <div class="section-title-row">
+          <h3>Dados Pessoais</h3>
+          <div class="action-buttons">
+            <button class="btn-edit-sidebar" onclick="toggleEdit('personal-data-section', this)">
+              <i class="fas fa-pen"></i> <span class="btn-text" style="display:none">Alterar</span>
+            </button>
+            <button class="btn-cancel-edit hidden" onclick="cancelEdit('personal-data-section')">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <label>CPF</label>
+          <input type="text" id="input-cpf" class="field-input sidebar-input" value="{% if usuario and usuario.cpf_formatado %}{{ usuario.cpf_formatado }}{% else %}000.000.000-00{% endif %}" readonly
+            maxlength="14">
+        </div>
+        <div class="input-group">
+          <label>Nascimento</label>
+          <input type="text" id="input-nascimento" class="field-input sidebar-input" value="{% if usuario and usuario.dataNasc_formatada %}{{ usuario.dataNasc_formatada }}{% else %}00/00/0000{% endif %}" readonly
+            maxlength="10">
+        </div>
+        <div class="input-group">
+          <label>Email</label>
+          <input type="email" class="field-input sidebar-input" value="{% if usuario and usuario.email %}{{ usuario.email }}{% else %}email@exemplo.com{% endif %}" readonly>
+        </div>
+        <div class="input-group">
+          <label>Telefone</label>
+          <input type="tel" id="input-telefone" class="field-input sidebar-input" value="{% if usuario and usuario.telefone_formatado %}{{ usuario.telefone_formatado }}{% elif usuario and usuario.telefone %}{{ usuario.telefone }}{% else %}(00) 00000-0000{% endif %}" readonly
+            maxlength="15">
+        </div>
+      </div>
+    </aside>
+
+
+    <main class="main-content">
+
+      <section class="welcome-banner">
+        <div class="banner-main-text">
+          <h1>Bem-vindo, {% if usuario %}{{ usuario.nome.split(' ')[0] }}{% else %}Usuário{% endif %}!</h1>
+          <p>Lembre-se de manter seu cadastro atualizado.</p>
+        </div>
+      </section>
+
+      <section class="generic-card address-card" id="address-section">
+        <div class="card-header-flex accordion-header" id="header-address"
+          onclick="toggleAccordion('wrapper-address', 'header-address')">
+          <h2>Endereço</h2>
+
+          <div class="header-controls">
+            <button class="btn-edit-card btn-action" onclick="event.stopPropagation(); toggleEdit('address-section', this)">
+              <i class="fas fa-pen"></i> <span class="btn-text">Alterar</span>
+            </button>
+            <button class="btn-cancel-card btn-action hidden" onclick="event.stopPropagation(); cancelEdit('address-section')">
+              <i class="fas fa-times"></i> <span class="btn-text">Cancelar</span>
+            </button>
+            <span class="arrow">⯆</span>
+          </div>
+        </div>
+
+        <div class="accordion-wrapper" id="wrapper-address">
+          <div class="address-details-form padding-content">
+            
+            <div class="form-row full-width">
+              <label>Rua/Logradouro</label>
+              <input type="text" id="input-rua" class="field-input card-input" value="{% if usuario and usuario.rua %}{{ usuario.rua }}{% else %}{% endif %}" readonly>
+            </div>
+
+            <div class="form-row full-width">
+              <label>Bairro</label>
+              <input type="text" id="input-bairro" class="field-input card-input" value="{% if usuario and usuario.bairro %}{{ usuario.bairro }}{% else %}{% endif %}" readonly>
+            </div>
+
+            <div class="form-row three-cols">
+              <div class="col">
+                <label>Cidade</label>
+                <input type="text" id="input-cidade" class="field-input card-input" value="{% if usuario and usuario.cidade %}{{ usuario.cidade }}{% else %}{% endif %}" readonly>
+              </div>
+              <div class="col">
+                <label>Estado</label>
+                <input type="text" id="input-uf" class="field-input card-input" value="{% if usuario and usuario.estado %}{{ usuario.estado }}{% else %}{% endif %}" readonly>
+              </div>
+              <div class="col">
+                <label>CEP</label>
+                <input type="text" id="input-cep" class="field-input card-input" value="{% if usuario and usuario.cep %}{{ usuario.cep }}{% else %}{% endif %}" readonly maxlength="9">
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="generic-card projects">
+        <div class="section-header accordion-header" id="header-history"
+          onclick="toggleAccordion('wrapper-history', 'header-history')">
+          <h2>Histórico Médico</h2>
+          <span class="arrow">⯆</span>
+        </div>
+
+        <div class="accordion-wrapper" id="wrapper-history">
+          <div class="projects-content padding-content" id="history-content">
+            <table id="history-table" style="display: none;">
+              <thead>
+                <tr>
+                  <th>Data</th>
+                  <th>Médico/Clínica</th>
+                  <th>Exames</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="history-tbody">
+              </tbody>
+            </table>
+            <div id="history-empty" style="display: none; text-align: center; padding: 40px; color: #999;">
+              <i class="fas fa-calendar-times" style="font-size: 3rem; margin-bottom: 15px; opacity: 0.5;"></i>
+              <p style="font-size: 1.1rem; font-weight: 600;">Nenhum agendamento encontrado</p>
+              <p style="font-size: 0.9rem; margin-top: 10px;">Você ainda não possui histórico médico registrado.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+
+  <div class="modal-overlay" id="confirm-modal">
+    <div class="modal-card confirmation-card">
+      <h3 class="modal-title">Salvar Alterações?</h3>
+      <p class="modal-message">Confirme se deseja atualizar suas informações com os novos dados inseridos.</p>
+
+      <div class="modal-actions">
+        <button class="btn-modal btn-cancel" id="btn-cancel-save">Cancelar</button>
+        <button class="btn-modal btn-confirm" id="btn-confirm-save">Sim, Salvar</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast-container"></div>
+  <script src="{{ url_for('static', filename='header.js') }}"></script>
+  <script src="{{ url_for('static', filename='perfil/perfil.js') }}"></script>
+
+</body>
+
+</html>

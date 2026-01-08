@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Encontre Profissionais - Bem Na Hora</title>
+    <link rel="icon" href="{{ url_for('static', filename='img/relogio.png') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='vitrine/vitrine.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='global.css') }}">
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+        <div class="logo">
+            <a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='img/logo.png') }}" alt="Bem Na Hora"></a>
+        </div>
+        <nav class="nav">
+            <a href="#" class="nav-button1">Saiba mais</a>
+            <a href="{{ url_for('vitrine') }}" class="nav-button2">Consultas</a>
+            <a href="{{ url_for('cadastro_parceiro') }}" class="nav-button3">Torne-se<br>Parceiro</a>
+        </nav>
+        {% if usuario_logado %}
+        <div class="profile-pic">
+            <img src="{% if foto_perfil_usuario %}{{ url_for('static', filename='uploads/' + foto_perfil_usuario) }}{% else %}https://cdn-icons-png.flaticon.com/512/3135/3135715.png{% endif %}" alt="Perfil">
+            <div class="dropdown-menu">
+                {% if tipo_usuario == 'usuario' %}
+                    <a href="{{ url_for('perfil_usuario') }}" class="dropdown-item">Meu Perfil</a>
+                {% elif tipo_usuario == 'profissional' %}
+                    <a href="{{ url_for('doutor_editar') }}" class="dropdown-item">Editar Anúncio</a>
+                {% elif tipo_usuario == 'clinica' %}
+                    <a href="{{ url_for('clinica_editar') }}" class="dropdown-item">Editar Anúncio</a>
+                {% endif %}
+                <a href="{{ url_for('agenda') }}" class="dropdown-item">Agenda</a>
+                <button class="dropdown-item" onclick="logout()">Sair</button>
+            </div>
+        </div>
+        {% else %}
+        <a href="{{ url_for('cadastro_usuario') }}" class="btn-login">Login</a>
+        {% endif %}
+    </header>
+
+
+    <!-- HERO SECTION -->
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1>Encontre o especialista ideal<br><span class="highlight">Bem Na Hora</span> que você precisa</h1>
+
+            <div class="main-search-bar">
+                <div class="search-input-group">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" placeholder="Ex: Cardiologista, Clínica Geral...">
+                </div>
+                <div class="divider"></div>
+                <div class="search-input-group">
+                    <i class="fa-solid fa-location-dot"></i>
+                    <input type="text" placeholder="Localização (Cidade ou Bairro)">
+                </div>
+                <button class="btn-search">Pesquisar</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- MAIN CONTENT -->
+    <main class="main-container">
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <div class="sidebar-content">
+                <!-- Toggle Clínica vs Profissional -->
+                <div class="filter-group">
+                    <div class="type-toggle-container">
+                        <input type="radio" name="type" id="type-pro" checked>
+                        <label for="type-pro">Profissional</label>
+
+                        <input type="radio" name="type" id="type-clinic">
+                        <label for="type-clinic">Clínica</label>
+
+                        <div class="toggle-background"></div>
+                    </div>
+                </div>
+
+                <!-- Especialidade (Select) -->
+                <div class="filter-group">
+                    <label class="filter-label">Especialidade</label>
+                    <div class="custom-select-wrapper">
+                        <div class="custom-select">
+                            <span class="selected-option">Todas as especialidades</span>
+                            <ul class="custom-options">
+                                <li data-value="">Todas as especialidades</li>
+                                <li data-value="cardio">Cardiologia</li>
+                                <li data-value="dermato">Dermatologia</li>
+                                <li data-value="orto">Ortopedia</li>
+                                <li data-value="psico">Psicologia</li>
+                            </ul>
+                        </div>
+                        <select name="especialidade" style="display:none;">
+                            <option value="">Todas as especialidades</option>
+                            <option value="cardio">Cardiologia</option>
+                            <option value="dermato">Dermatologia</option>
+                            <option value="orto">Ortopedia</option>
+                            <option value="psico">Psicologia</option>
+                        </select>
+                    </div>
+                </div>
+                <!-- Modalidade (Checkbox) -->
+                <div class="filter-group">
+                    <label class="filter-label">Modalidade</label>
+                    <label class="custom-checkbox">
+                        <input type="checkbox" checked>
+                        <span class="checkmark"></span>
+                        Presencial
+                        <span class="count">120</span>
+                    </label>
+                    <label class="custom-checkbox">
+                        <input type="checkbox">
+                        <span class="checkmark"></span>
+                        Telemedicina
+                        <span class="count">45</span>
+                    </label>
+                    <label class="custom-checkbox">
+                        <input type="checkbox">
+                        <span class="checkmark"></span>
+                        Domiciliar
+                        <span class="count">12</span>
+                    </label>
+                </div>
+
+                <!-- Faixa de Preço (Slider) -->
+                <div class="filter-group">
+                    <div class="price-header">
+                        <label class="filter-label">Valor da Consulta</label>
+                        <span id="price-value">Até R$ 300</span>
+                    </div>
+                    <input type="range" min="50" max="999" value="300" class="price-slider" id="price-range">
+
+                    <div class="price-labels">
+                        <span>R$ 50</span>
+                        <span>R$ 999+</span>
+                    </div>
+                </div>
+
+                <!-- Filtros Extras (Switch) -->
+                <div class="filter-group">
+                    <label class="filter-label">Outros Filtros</label>
+
+                    <div class="switch-row">
+                        <span>Aceita Convênio</span>
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+
+                    <div class="switch-row">
+                        <span>Estacionamento</span>
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                    <div class="switch-row">
+                        <span>Acessibilidade</span>
+                        <label class="switch">
+                            <input type="checkbox">
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- RESULTADOS (Cards) -->
+        <section class="results-area">
+            <div class="results-header">
+                <h3 id="results-count">Carregando...</h3>
+                <div class="sort-wrapper">
+                    <span>Ordenar por:</span>
+
+                    <div class="custom-select-wrapper" style="width: 200px;">
+                        <div class="custom-select">
+                            <span class="selected-option">Relevância</span>
+                            <ul class="custom-options">
+                                <li data-value="relevancia">Relevância</li>
+                                <li data-value="preco_menor">Menor Preço</li>
+                                <li data-value="avaliacao">Melhor Avaliação</li>
+                            </ul>
+                        </div>
+                        <select name="ordenar" style="display:none;">
+                            <option value="relevancia">Relevância</option>
+                            <option value="preco_menor">Menor Preço</option>
+                            <option value="avaliacao">Melhor Avaliação</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div id="cards-container">
+                <!-- Cards serão inseridos aqui via JavaScript -->
+            </div>
+
+        </section>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <img src="{{ url_for('static', filename='img/logoBranco.png') }}" alt="LogoBranca Bem Na Hora" class="footer-logo">
+                </div>
+
+                <div>
+                    <h4 class="footer-title">Links Rápidos</h4>
+                    <ul class="footer-list">
+                        <li><a href="#" class="footer-link">Sobre Nós</a></li>
+                        <li><a href="#" class="footer-link">Consultas</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="footer-title">Contato</h4>
+                    <ul class="footer-list">
+                        <li class="footer-contact">✉️ contato@bemnahora.com</li>
+                        <li class="footer-contact">📞 (61) 98234-5678</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="footer-title">Redes Sociais</h4>
+                    <ul class="socials">
+                        <li><a href="#" id="insta" class="social-link"><i class="fab fa-instagram"></i></a></li>
+                        <li><a href="#" id="twi" class="social-link"><i class="fab fa-twitter"></i></a></li>
+                        <li><a href="#" id="face" class="social-link"><i class="fab fa-facebook-f"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-copy">&copy; 2025 Bem Na Hora. Todos os direitos reservados.</div>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='vitrine/vitrine.js') }}"></script>
+    <script src="{{ url_for('static', filename='header.js') }}"></script>
+</body>
+
+</html>

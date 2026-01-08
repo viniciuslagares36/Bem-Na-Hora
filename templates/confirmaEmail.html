@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Verifique seu Email - BemnaHora</title>
+    <link rel="icon" href="{{ url_for('static', filename='img/relogio.png') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='confirmaEmail/confirmaEmail.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='global.css') }}">
+</head>
+
+<body>
+    <div class="main-container">
+
+        <div class="left-column">
+            
+            <div>
+                <h1 class="main-title">
+                    Encontre<br>O Profissional Ideal na Hora
+                </h1>
+
+                <blockquote class="testimonial-quote">
+                    "O BemnaHora mudou nossa forma de agendar. Encontramos o especialista certo para o nosso filho em menos de 5 minutos."
+                </blockquote>
+
+                <div class="author-info">
+                    <img src="https://placehold.co/40x40/007EA7/ffffff?text=JF" onerror="this.src='https://placehold.co/40x40/007EA7/ffffff?text=JF'" alt="Foto de Perfil" class="author-avatar">
+                    <div>
+                        <p class="author-name">Joana F.</p>
+                        <p class="author-role">Paciente, Taguatinga</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="image-circles">
+                <div class="circle circle-cerulean-blue">
+                    <img src="{{ url_for('static', filename='img/familia1.jpg') }}" onerror="this.src='https://placehold.co/128x128/007EA7/ffffff?text=[Img]'" class="circle-image">
+                </div>
+                <div class="circle circle-picton-blue">
+                    <img src="{{ url_for('static', filename='img/crianca.jpg') }}" onerror="this.src='https://placehold.co/160x160/00A7E1/ffffff?text=[Img]'" class="circle-image">
+                </div>
+            </div>
+        </div>
+
+        <div class="right-column">
+
+            <div class="logo-header">
+                <div class="main-logo-text">
+                    <span class="logo-plus">+</span> | Bem<span class="logo-light">naHora</span>
+                </div>
+                </div>
+
+            <h2 class="form-title">Verifique seu Email</h2>
+            <p class="form-description">
+                Enviamos um código de 6 dígitos para <span class="highlight-email">{{ email }}</span>.
+                Insira o código abaixo para ativar sua conta.
+            </p>
+
+            <form id="otp-form" class="otp-input-group">
+                <input type="text" id="otp-0" data-index="0" maxlength="1" pattern="\d{1}" class="otp-input" inputmode="numeric">
+                <input type="text" id="otp-1" data-index="1" maxlength="1" pattern="\d{1}" class="otp-input" inputmode="numeric">
+                <input type="text" id="otp-2" data-index="2" maxlength="1" pattern="\d{1}" class="otp-input" inputmode="numeric">
+                <input type="text" id="otp-3" data-index="3" maxlength="1" pattern="\d{1}" class="otp-input" inputmode="numeric">
+                <input type="text" id="otp-4" data-index="4" maxlength="1" pattern="\d{1}" class="otp-input" inputmode="numeric">
+                <input type="text" id="otp-5" data-index="5" maxlength="1" pattern="\d{1}" class="otp-input" inputmode="numeric">
+            </form>
+
+            <button class="verify-button">
+                Verificar e Ativar
+            </button>
+
+            <p class="resend-text">
+                Aguarde <span id="timer" class="timer-display">1:59</span> segundos antes de solicitar um novo código.
+            </p>
+        </div>
+
+    </div>
+    
+    <script src="{{ url_for('static', filename='confirmaEmail/confirmaEmail.js') }}"></script>
+</body>
+</html>

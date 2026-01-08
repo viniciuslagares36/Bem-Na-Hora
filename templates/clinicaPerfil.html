@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if clinica.nomeExibicao %}{{ clinica.nomeExibicao }}{% else %}Clínica{% endif %} | Bem Na Hora</title>
+    <link rel="icon" href="{{ url_for('static', filename='img/relogio.png') }}">
+    
+    <!-- Fonte Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+    <!-- CSS Específico da Clínica -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='global.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='clinicaPerfil/clinicaPerfil.css') }}">
+    
+</head>
+<body>
+
+    <!-- HEADER -->
+    <header class="header">
+        <div class="logo">
+            <a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='img/logo.png') }}" alt="Bem Na Hora"></a>
+        </div>
+        <nav class="nav">
+            <a href="#" class="nav-button1">Saiba mais</a>
+            <a href="{{ url_for('vitrine') }}" class="nav-button2">Consultas</a>
+            <a href="{{ url_for('cadastro_parceiro') }}" class="nav-button3">Torne-se<br>Parceiro</a>
+        </nav>
+        {% if usuario_logado %}
+        <div class="profile-pic">
+            <img src="{% if foto_perfil_usuario %}{{ url_for('static', filename='uploads/' + foto_perfil_usuario) }}{% else %}https://cdn-icons-png.flaticon.com/512/3135/3135715.png{% endif %}" alt="Perfil">
+            <div class="dropdown-menu">
+                {% if tipo_usuario == 'usuario' %}
+                    <a href="{{ url_for('perfil_usuario') }}" class="dropdown-item">Meu Perfil</a>
+                {% elif tipo_usuario == 'profissional' %}
+                    <a href="{{ url_for('doutor_editar') }}" class="dropdown-item">Editar Anúncio</a>
+                {% elif tipo_usuario == 'clinica' %}
+                    <a href="{{ url_for('clinica_editar') }}" class="dropdown-item">Editar Anúncio</a>
+                {% endif %}
+                <a href="{{ url_for('agenda') }}" class="dropdown-item">Agenda</a>
+                <button class="dropdown-item" onclick="logout()">Sair</button>
+            </div>
+        </div>
+        {% else %}
+        <a href="{{ url_for('cadastro_usuario') }}" class="btn-login">Login</a>
+        {% endif %}
+    </header>
+
+    <!-- FUNDO DECORATIVO -->
+    <div class="profile-background">
+        <div class="shape shape-1"></div>
+        <div class="shape shape-2"></div>
+    </div>
+
+    <main class="profile-container">
+        
+        <!-- CARD PRINCIPAL (Hero) -->
+        <section class="profile-card">
+            <div class="profile-content-wrapper">
+                
+                <!-- Coluna Esquerda -->
+                <div class="profile-left">
+                    <div class="avatar-container">
+                        <div class="avatar-placeholder logo-style">
+                            <i class="fa-solid fa-hospital-user"></i>
+                        </div>
+                        <div class="status-badge">
+                            <i class="fa-solid fa-clock"></i> Aberto Agora
+                        </div>
+                    </div>
+                    
+                    <div class="location-mobile">
+                        <i class="fa-solid fa-location-dot"></i> Vila Mariana, SP
+                    </div>
+                </div>
+
+                <!-- Coluna Direita -->
+                <div class="profile-right">
+                    <div class="profile-header">
+                        <div class="name-area">
+                            <h1>{% if clinica.nomeExibicao %}{{ clinica.nomeExibicao }}{% else %}Clínica{% endif %}</h1>
+                            <div class="social-links">
+                                {% if clinica.site_url %}<a href="{{ clinica.site_url }}" target="_blank" title="Site Oficial"><i class="fa-solid fa-globe"></i></a>{% endif %}
+                                {% if clinica.instagram %}<a href="https://instagram.com/{{ clinica.instagram }}" target="_blank" title="Instagram"><i class="fa-brands fa-instagram"></i></a>{% endif %}
+                            </div>
+                        </div>
+
+                        <div class="action-buttons">
+                            <button class="btn-primary"><i class="fa-brands fa-whatsapp"></i> Agendar</button>
+                            <button class="btn-secondary"><i class="fa-solid fa-phone"></i> Ligar</button>
+                        </div>
+                    </div>
+
+                    <div class="quick-stats">
+                        <div class="stat-item">
+                            <span class="stat-label">Tipo</span>
+                            <span class="stat-value">{% if clinica.tipo %}{{ clinica.tipo }}{% else %}Multidisciplinar{% endif %}</span>
+                        </div>
+                        {% if clinica.ano_fundacao %}
+                        <div class="stat-item">
+                            <span class="stat-label">No Mercado Desde</span>
+                            <span class="stat-value">{{ clinica.ano_fundacao }}</span>
+                        </div>
+                        {% endif %}
+                        {% if clinica.diretor_tecnico %}
+                        <div class="stat-item">
+                            <span class="stat-label">Diretor Técnico</span>
+                            <span class="stat-value">{{ clinica.diretor_tecnico }}</span>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="skills-section">
+                        <span class="stat-label">Infraestrutura & Facilidades</span>
+                        <div class="tags-list">
+                            {% if clinica.convenios_list %}
+                            {% for convenio in clinica.convenios_list %}
+                            <span class="pill">{{ convenio }}</span>
+                            {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- NAVEGAÇÃO EM ABAS -->
+        <nav class="profile-tabs">
+            <ul>
+                <li class="active" onclick="switchTab('sobre')">A Clínica</li>
+                <li onclick="switchTab('equipe')">Corpo Clínico</li>
+                <li onclick="switchTab('servicos')">Exames e Procedimentos</li>
+                <li onclick="switchTab('avaliacoes')">Avaliações ({{ clinica.media_avaliacao|default(0) }})</li>
+                <li onclick="switchTab('local')">Localização</li>
+            </ul>
+        </nav>
+
+        <!-- CONTEÚDO DAS ABAS -->
+        <section class="tab-content" id="content-area">
+            
+            <!-- Aba Sobre -->
+             <div id="sobre" class="tab-pane active-pane">
+                 <h2 class="section-title">Nossa História e Missão</h2>
+                 <div class="text-content">
+                     {% if clinica.historia %}
+                     {{ clinica.historia|replace('\n', '</p><p>')|safe }}
+                     {% else %}
+                     <p>A <strong>{% if clinica.nomeExibicao %}{{ clinica.nomeExibicao }}{% else %}Clínica{% endif %}</strong> nasceu com o propósito de oferecer saúde de qualidade em um ambiente acolhedor e tecnológico.</p>
+                     <p>Contamos com especialidades médicas e um centro de diagnóstico completo, permitindo que nossos pacientes realizem consultas e exames no mesmo local, otimizando tempo e garantindo agilidade no diagnóstico.</p>
+                     {% endif %}
+
+                     <h3 class="subsection-title">Nossa Estrutura</h3>
+                     <div class="clinic-gallery">
+                         <div class="gallery-item item-1"><i class="fa-solid fa-image"></i> Recepção</div>
+                         <div class="gallery-item item-2"><i class="fa-solid fa-image"></i> Consultório 1</div>
+                         <div class="gallery-item item-3"><i class="fa-solid fa-image"></i> Sala de Exames</div>
+                     </div>
+                 </div>
+             </div>
+
+            <!-- Aba Corpo Clínico -->
+             <div id="equipe" class="tab-pane">
+                 <h2 class="section-title">Nossos Especialistas</h2>
+                 <p class="section-subtitle">Conheça a equipe médica pronta para te atender.</p>
+
+                 <div class="team-grid">
+                     {% if clinica.equipe_list %}
+                         {% for membro in clinica.equipe_list %}
+                         <div class="team-card">
+                             <div class="team-avatar"><i class="fa-solid fa-user-doctor"></i></div>
+                             <h4>{{ membro.nome }}</h4>
+                             <span class="specialty-label">{{ membro.especialidade }}</span>
+                             {% if membro.experiencia %}
+                             <div class="team-xp"><i class="fa-solid fa-medal"></i> {{ membro.experiencia }}</div>
+                             {% endif %}
+                         </div>
+                         {% endfor %}
+                     {% else %}
+                         <p style="text-align: center; color: #777; padding: 40px;">Equipe médica não cadastrada.</p>
+                     {% endif %}
+                 </div>
+             </div>
+
+            <!-- Aba Serviços -->
+            <div id="servicos" class="tab-pane">
+                <h2 class="section-title">Exames Disponíveis</h2>
+                <div class="services-list">
+                    <div class="service-item">
+                        <div class="service-info">
+                            <h4>Ultrassonografia Geral</h4>
+                            <p>Abdome total, pélvica, tireoide e obstétrica.</p>
+                        </div>
+                        <div class="service-price"><span>A partir de R$ 120,00</span></div>
+                    </div>
+                    <div class="service-item">
+                        <div class="service-info">
+                            <h4>Raio-X Digital</h4>
+                            <p>Tórax, face, coluna e extremidades. Sem agendamento.</p>
+                        </div>
+                        <div class="service-price"><span>R$ 80,00</span></div>
+                    </div>
+                    <div class="service-item">
+                        <div class="service-info">
+                            <h4>Exames Laboratoriais</h4>
+                            <p>Hemograma, colesterol, glicemia e check-up completo.</p>
+                        </div>
+                        <div class="service-price"><span>Sob Consulta</span></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Aba Avaliações -->
+            <div id="avaliacoes" class="tab-pane">
+                <div class="reviews-summary">
+                    <div class="score-section">
+                        <div class="big-score">{{ clinica.media_avaliacao|default(0) }}</div>
+                        <div class="score-stars">
+                            {% for i in range(5) %}
+                                {% if clinica.media_avaliacao >= i+1 %}
+                                    <i class="fa-solid fa-star"></i>
+                                {% elif clinica.media_avaliacao >= i+0.5 %}
+                                    <i class="fa-solid fa-star-half-stroke"></i>
+                                {% else %}
+                                    <i class="fa-regular fa-star"></i>
+                                {% endif %}
+                            {% endfor %}
+                            <span>({{ clinica.total_avaliacoes|default(0) }} Avaliações)</span>
+                        </div>
+                    </div>
+                    {% if usuario_logado %}
+                    <button class="btn-secondary evaluate-btn" onclick="abrirModalAvaliacao('clinica', {{ clinica.idClinica }})">
+                        <i class="fa-solid fa-star"></i> Avaliar Clínica
+                    </button>
+                    {% endif %}
+                </div>
+
+                <div class="reviews-grid">
+                    {% if clinica.avaliacoes_recentes %}
+                        {% for avaliacao in clinica.avaliacoes_recentes %}
+                        <div class="review-card">
+                            <div class="review-header">
+                                <div class="reviewer-avatar">{{ avaliacao.nome_usuario[0].upper() }}</div>
+                                <div class="reviewer-data">
+                                    <strong>{{ avaliacao.nome_usuario }}</strong>
+                                    <div class="small-stars">
+                                        {% for i in range(5) %}
+                                            {% if avaliacao.nota >= i+1 %}
+                                                <i class="fa-solid fa-star"></i>
+                                            {% else %}
+                                                <i class="fa-regular fa-star"></i>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                <span class="review-date">{{ avaliacao.data_avaliacao.strftime('%d/%m/%Y') if avaliacao.data_avaliacao else 'Data não informada' }}</span>
+                            </div>
+                            <p class="review-text">"{{ avaliacao.comentario }}"</p>
+                        </div>
+                        {% endfor %}
+                    {% else %}
+                        <p style="text-align: center; color: #777; padding: 40px;">Nenhuma avaliação disponível.</p>
+                    {% endif %}
+                </div>
+
+                {% if clinica.total_avaliacoes > 3 %}
+                <div class="ver-mais-container">
+                    <a href="#" onclick="verMaisAvaliacoes('clinica', {{ clinica.idClinica }})" class="ver-mais-link">Ver mais avaliações</a>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Aba Localização -->
+            <div id="local" class="tab-pane">
+                <h2 class="section-title">Como Chegar</h2>
+                <div class="location-container">
+                    <div id="map-container" style="position: relative; width: 100%; height: 300px;">
+                        <div id="map" 
+                            class="map-style"
+                            style="width: 100%; height: 100%; z-index: 1;"
+                            data-endereco="{{ clinica.endereco }}" 
+                            data-bairro="{{ clinica.bairro }}" 
+                            data-cidade="{{ clinica.cidade }}" 
+                            data-estado="{{ clinica.cidade.split('-')[1] if '-' in clinica.cidade else 'SP' }}">
+                        </div>
+                    </div>
+                    <div class="address-details">
+                        <div class="address-item">
+                            <i class="fa-solid fa-location-dot icon-box"></i>
+                            <div>
+                                <h4>Endereço</h4>
+                                <p>Rua Domingos de Morais, 500</p>
+                                <p>Vila Mariana, São Paulo - SP</p>
+                            </div>
+                        </div>
+                        <div class="address-item">
+                            <i class="fa-regular fa-clock icon-box"></i>
+                            <div>
+                                <h4>Horário de Funcionamento</h4>
+                                <p>Seg - Sex: 07:00 - 20:00</p>
+                                <p>Sáb: 07:00 - 14:00</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- MODAL DE AVALIAÇÃO -->
+    <div id="modalAvaliacao" class="modal-overlay">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Avaliar <span id="modalTipo"></span></h3>
+                <button class="modal-close" onclick="fecharModalAvaliacao()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="formAvaliacao">
+                    <div class="rating-section">
+                        <label>Quantas estrelas você dá?</label>
+                        <div class="star-rating" id="starRating">
+                            <i class="fa-regular fa-star" data-rating="1"></i>
+                            <i class="fa-regular fa-star" data-rating="2"></i>
+                            <i class="fa-regular fa-star" data-rating="3"></i>
+                            <i class="fa-regular fa-star" data-rating="4"></i>
+                            <i class="fa-regular fa-star" data-rating="5"></i>
+                        </div>
+                        <input type="hidden" id="ratingValue" name="nota" value="0">
+                    </div>
+                    <div class="comment-section">
+                        <label for="comentario">Comentário (opcional)</label>
+                        <textarea id="comentario" name="comentario" placeholder="Conte sua experiência..." maxlength="500"></textarea>
+                        <small id="charCount">0/500 caracteres</small>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="button" class="btn-outline" onclick="fecharModalAvaliacao()">Cancelar</button>
+                        <button type="submit" class="btn-primary" id="btnSubmitAvaliacao">Enviar Avaliação</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <div class="container">
+            <div class="footer-grid">
+                <div>
+                    <img src="{{ url_for('static', filename='img/logoBranco.png') }}" alt="LogoBranca Bem Na Hora" class="footer-logo">
+                </div>
+
+                <div>
+                    <h4 class="footer-title">Links Rápidos</h4>
+                    <ul class="footer-list">
+                        <li><a href="#" class="footer-link">Sobre Nós</a></li>
+                        <li><a href="#" class="footer-link">Consultas</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="footer-title">Contato</h4>
+                    <ul class="footer-list">
+                        <li class="footer-contact">✉️ contato@bemnahora.com</li>
+                        <li class="footer-contact">📞 (61) 98234-5678</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="footer-title">Redes Sociais</h4>
+                    <ul class="socials">
+                        <li><a href="#" id="insta" class="social-link"><i class="fab fa-instagram"></i></a></li>
+                        <li><a href="#" id="twi" class="social-link"><i class="fab fa-twitter"></i></a></li>
+                        <li><a href="#" id="face" class="social-link"><i class="fab fa-facebook-f"></i></a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-copy">&copy; 2025 Bem Na Hora. Todos os direitos reservados.</div>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='clinicaPerfil/clinicaPerfil.js') }}"></script>
+    <script src="{{ url_for('static', filename='header.js') }}"></script>
+</body>
+</html>

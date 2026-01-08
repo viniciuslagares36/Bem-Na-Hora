@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login e Registro</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/airbnb.css">
+    
+    <link rel="icon" href="{{ url_for('static', filename='img/relogio.png') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='cadastro/cadastro.css') }}">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='global.css') }}">
+</head>
+
+<body>
+    <header class="header">
+        <div class="logo">
+            <a href="{{ url_for('index') }}"><img src="{{ url_for('static', filename='img/logo.png') }}" alt="Bem Na Hora"></a>
+        </div>
+        <nav class="nav">
+            <a href="#" class="nav-button1">Saiba mais</a>
+            <a href="{{ url_for('vitrine') }}" class="nav-button2">Consultas</a>
+            <a href="{{ url_for('cadastro_parceiro') }}" class="nav-button3">Torne-se<br>Parceiro</a>
+        </nav>
+        <div class="header-spacer"></div>
+    </header>
+
+    <main class="main-container">
+        <div class="login-box" id="login-box">
+            <div class="card">
+
+                <div class="register-royal" id="royal-section">
+                    <div class="royal-content royal-login">
+                        <h3 id="royal-title">Bem-vindo!</h3>
+                        <p id="royal-text">Entre com suas credenciais ou crie uma conta</p>
+                        <button class="btn-register" id="btn-to-signup">CADASTRE-SE</button>
+                    </div>
+
+                    <div class="royal-content royal-signup">
+                        <h3 id="royal-title-signup">Encontre a clínica ideal perto de você.</h3>
+                        <p id="royal-text-signup">Se já possui uma conta clique no botão abaixo.</p>
+                        <button class="btn-register" id="btn-to-login">ENTRAR</button>
+                    </div>
+                </div>
+
+                <div class="form-container">
+
+                    <div class="form login-section" id="login-form-section">
+                        <h2 class="title">Faça login</h2>
+                        <form class="main-form">
+                            <input type="email" placeholder="Email" required>
+                            <input type="password" placeholder="Password" required>
+                            <a href="#" class="forgot-password">Esqueceu sua senha?</a>
+                            <button type="submit" class="btn-submit">ENTRAR</button>
+                        </form>
+                    </div>
+
+                    <div class="form register-section hidden" id="register-form-section">
+                        <h2 class="title">Criar Conta</h2>
+
+                        <form class="main-form register-grid">
+                            <input type="text" id="nome" placeholder="Nome Completo" required>
+                            <input type="email" id="email" placeholder="Email" required>
+
+                            <input type="text" id="cpf" placeholder="CPF" maxlength="14" required>
+
+                            <div class="custom-select-wrapper">
+                                <div class="custom-select" id="selectConvenio">
+                                    <span class="selected-option">Convênio</span>
+                                    <ul class="custom-options">
+                                        <li data-value="Nenhum">Nenhum</li>
+                                        <li data-value="Amil">Amil</li>
+                                        <li data-value="Bradesco">Bradesco</li>
+                                        <li data-value="Cassi">Cassi</li>
+                                        <li data-value="Unimed">Unimed</li>
+                                        <li data-value="SulAmerica">SulAmerica</li>
+                                        <li data-value="Fusex">Fusex</li>
+                                        <li data-value="Particular">Particular</li>
+                                    </ul>
+                                </div>
+                                <select id="convenio" name="convenio" required style="display:none;">
+                                    <option value=""></option>
+                                    <option value="Nenhum">Nenhum</option>
+                                    <option value="Amil">Amil</option>
+                                    <option value="Bradesco">Bradesco</option>
+                                    <option value="Cassi">Cassi</option>
+                                    <option value="Unimed">Unimed</option>
+                                    <option value="SulAmerica">SulAmerica</option>
+                                    <option value="Fusex">Fusex</option>
+                                </select>
+                            </div>
+
+                            <div class="custom-select-wrapper">
+                                <div class="custom-select" id="selectGenero">
+                                    <span class="selected-option">Gênero</span>
+                                    <ul class="custom-options">
+                                        <li data-value="F">Feminino</li>
+                                        <li data-value="M">Masculino</li>
+                                        <li data-value="O">Outro</li>
+                                    </ul>
+                                </div>
+                                <select id="genero" name="genero" required style="display:none;">
+                                    <option value=""></option>
+                                    <option value="F">Feminino</option>
+                                    <option value="M">Masculino</option>
+                                    <option value="O">Outro</option>
+                                </select>
+                            </div>
+
+                            <input type="text" id="data-nasc" class="input-data" placeholder="Data de Nascimento" maxlength="10"
+                                required>
+                            <input type="tel" id="telefone" placeholder="Telefone (DDD + Número)" required>
+                            <input type="password" id="senha" placeholder="Senha" required>
+
+                            <div class="terms-checkbox">
+                                <input type="checkbox" id="terms" required>
+                                <label for="terms">Eu concordo com os <a href="#" class="terms-link"
+                                        id="open-terms-modal">Termos de Uso</a></label>
+                            </div>
+
+                            <button type="submit" class="btn-submit register-submit">INSCREVER</button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </main>
+
+    <div class="modal-overlay" id="terms-modal">
+        <div class="modal-card">
+            <button class="close-modal" id="close-modal-btn">&times;</button>
+            <h2 class="modal-title">Termos de Uso</h2>
+            <div class="modal-body">
+                <p><strong>Última atualização: Dezembro de 2025</strong></p>
+
+                <h3>1. Aceitação dos Termos</h3>
+                <p>Ao acessar e usar o site <strong>Bem Na Hora</strong>, você concorda em cumprir estes termos de
+                    serviço, todas as leis e regulamentos aplicáveis ​​e concorda que é responsável pelo cumprimento de
+                    todas as leis locais aplicáveis. Se você não concordar com algum desses termos, está proibido de
+                    usar ou acessar este site.</p>
+
+                <h3>2. Uso de Licença</h3>
+                <p>É concedida permissão para baixar temporariamente uma cópia dos materiais (informações ou software)
+                    no site Bem Na Hora, apenas para visualização transitória pessoal e não comercial. Esta é a
+                    concessão de uma licença, não uma transferência de título e, sob esta licença, você não pode:</p>
+                <ul>
+                    <li>Modificar ou copiar os materiais;</li>
+                    <li>Usar os materiais para qualquer finalidade comercial ou para exibição pública (comercial ou não
+                        comercial);</li>
+                    <li>Tentar descompilar ou fazer engenharia reversa de qualquer software contido no site Bem Na Hora;
+                    </li>
+                    <li>Remover quaisquer direitos autorais ou outras notações de propriedade dos materiais; ou</li>
+                    <li>Transferir os materiais para outra pessoa ou 'espelhe' os materiais em qualquer outro servidor.
+                    </li>
+                </ul>
+                <p>Esta licença será automaticamente rescindida se você violar alguma dessas restrições e poderá ser
+                    rescindida por Bem Na Hora a qualquer momento.</p>
+
+                <h3>3. Isenção de Responsabilidade</h3>
+                <p>Os materiais no site da Bem Na Hora são fornecidos 'como estão'. Bem Na Hora não oferece garantias,
+                    expressas ou implícitas, e, por este meio, isenta e nega todas as outras garantias, incluindo, sem
+                    limitação, garantias implícitas ou condições de comercialização, adequação a um fim específico ou
+                    não violação de propriedade intelectual ou outra violação de direitos.</p>
+
+                <h3>4. Limitações</h3>
+                <p>Em nenhum caso o Bem Na Hora ou seus fornecedores serão responsáveis ​​por quaisquer danos
+                    (incluindo, sem limitação, danos por perda de dados ou lucro ou devido a interrupção dos negócios)
+                    decorrentes do uso ou da incapacidade de usar os materiais em Bem Na Hora, mesmo que Bem Na Hora ou
+                    um representante autorizado da Bem Na Hora tenha sido notificado oralmente ou por escrito da
+                    possibilidade de tais danos.</p>
+
+                <h3>5. Precisão dos Materiais</h3>
+                <p>Os materiais exibidos no site da Bem Na Hora podem incluir erros técnicos, tipográficos ou
+                    fotográficos. Bem Na Hora não garante que qualquer material em seu site seja preciso, completo ou
+                    atual. Bem Na Hora pode fazer alterações nos materiais contidos em seu site a qualquer momento, sem
+                    aviso prévio.</p>
+
+                <h3>6. Links</h3>
+                <p>O Bem Na Hora não analisou todos os sites vinculados ao seu site e não é responsável pelo conteúdo de
+                    nenhum site vinculado. A inclusão de qualquer link não implica endosso por Bem Na Hora do site. O
+                    uso de qualquer site vinculado é por conta e risco do usuário.</p>
+
+                <h3>7. Modificações</h3>
+                <p>O Bem Na Hora pode revisar estes termos de serviço do site a qualquer momento, sem aviso prévio. Ao
+                    usar este site, você concorda em ficar vinculado à versão atual desses termos de serviço.</p>
+
+                <h3>8. Lei Aplicável</h3>
+                <p>Estes termos e condições são regidos e interpretados de acordo com as leis do Brasil e você se
+                    submete irrevogavelmente à jurisdição exclusiva dos tribunais naquele estado ou localidade.</p>
+
+                <h3>9. Privacidade</h3>
+                <p>A sua privacidade é importante para nós. É política do Bem Na Hora respeitar a sua privacidade em
+                    relação a qualquer informação sua que possamos coletar no site Bem Na Hora, e outros sites que
+                    possuímos e operamos. Solicitamos informações pessoais apenas quando realmente precisamos delas para
+                    lhe fornecer um serviço.</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://npmcdn.com/flatpickr/dist/l10n/pt.js"></script>
+    <script src="{{ url_for('static', filename='cadastro/cadastro.js') }}"></script>
+</body>
+
+</html>

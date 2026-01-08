@@ -1,0 +1,386 @@
+/* 1. RESET UNIVERSAL */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --azul-principal: #00A7E1;
+    --preto: #00171F;
+    --turques: #003459;
+    --azul-escuro: #007EA7;
+    --branco: #FFFFFF;
+    
+    --text-main: var(--preto);
+    --text-secondary: var(--azul-escuro);
+}
+
+/* 2. BODY TRAVADO */
+body {
+    font-family: 'Inter', sans-serif;
+    background-image: url('../img/background.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    overflow: hidden; 
+}
+
+/* 3. CONTAINER PRINCIPAL */
+.main-container {
+    width: 100%;
+    /* Mobile First */
+    display: flex;
+    flex-direction: column;
+    background-color: var(--branco);
+    box-shadow: 0 25px 40px -8px rgba(0, 0, 0, 0.3), 0 15px 25px -8px rgba(0, 0, 0, 0.12); 
+    border-radius: 1.5rem;
+    overflow: hidden;
+    position: relative;
+    max-height: 95vh; 
+}
+
+/* --- VERSÃO NOTEBOOK (1024px até 1439px) --- */
+@media (min-width: 1024px) { 
+    .main-container {
+        flex-direction: row;
+        width: 90%; 
+        max-width: 950px; 
+        height: auto; 
+        
+        /* CORRIGIDO: Agora está igual ao da Senha */
+        height: 550px; 
+        
+        align-self: center;
+    }
+}
+
+/* --- VERSÃO MONITOR GRANDE (Acima de 1440px) --- */
+@media (min-width: 1440px) {
+    .main-container {
+        max-width: 1344px; 
+        min-height: 80vh;
+    }
+}
+
+/* --- COLUNA ESQUERDA --- */
+.left-column {
+    background-color: var(--turques);
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+    width: 100%;
+    position: relative;
+}
+
+@media (min-width: 1024px) {
+    .left-column {
+        width: 40%; 
+        border-top-right-radius: 50px;
+        border-bottom-right-radius: 50px;
+        padding: 2.5rem; 
+    }
+}
+
+@media (min-width: 1440px) {
+    .left-column {
+        width: 40%;
+        padding: 3rem 5rem; 
+    }
+}
+
+.main-title {
+    font-size: 1.75rem; 
+    line-height: 1.2;
+    font-weight: 800; 
+    color: var(--branco);
+    margin-bottom: 1.5rem;
+}
+
+@media (min-width: 1440px) {
+    .main-title {
+        font-size: 3rem; 
+    }
+}
+
+.testimonial-quote {
+    font-size: 0.95rem;
+    border-left: 4px solid var(--azul-principal);
+    padding-left: 1rem;
+    font-style: italic;
+    color: var(--azul-escuro);
+    margin-bottom: 1.5rem;
+}
+
+@media (min-width: 1440px) {
+    .testimonial-quote {
+        font-size: 1.25rem;
+        margin-bottom: 2.5rem;
+    }
+}
+
+.author-info {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem; 
+}
+
+.author-avatar {
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    margin-right: 0.75rem;
+    object-fit: cover;
+}
+
+.author-name {
+    font-weight: 700;
+    color: var(--branco);
+    font-size: 1rem;
+}
+
+.author-role {
+    font-size: 0.8rem;
+    color: var(--azul-escuro); 
+}
+
+/* --- CÍRCULOS DECORATIVOS --- */
+.image-circles {
+    position: relative;
+    height: 8rem; 
+    width: 100%;
+    margin-top: 1rem;
+}
+
+/* Ajuste Fino para Notebook */
+@media (min-width: 1024px) {
+    .image-circles {
+        height: 10rem;
+    }
+    
+    .circle-cerulean-blue {
+        width: 7rem; height: 7rem;
+        top: 0; left: 0;
+    }
+    .circle-picton-blue {
+        width: 9rem; height: 9rem;
+        bottom: 0; right: 0;
+    }
+}
+
+/* Ajuste Fino para Monitor Grande */
+@media (min-width: 1440px) {
+    .image-circles {
+        height: 12rem;
+        margin-top: 2rem;
+    }
+    
+    .circle-cerulean-blue {
+        width: 9rem; height: 9rem;
+        top: 10px; left: 10px; 
+    }
+    .circle-picton-blue {
+        width: 11rem; height: 11rem;
+        bottom: -10px; right: 20px; 
+    }
+}
+
+.circle {
+    position: absolute; 
+    border-radius: 50%; 
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    overflow: hidden; 
+}
+
+.circle-image {
+    width: 100%; 
+    height: 100%;
+    object-fit: cover;
+}
+
+/* --- COLUNA DIREITA (Formulário) --- */
+.right-column {
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; 
+    width: 100%;
+    background-color: var(--branco);
+    overflow-y: auto; 
+}
+
+@media (min-width: 1024px) {
+    .right-column {
+        width: 60%; 
+        padding: 0 5rem; 
+    }
+}
+
+@media (min-width: 1440px) {
+    .right-column {
+        width: 60%;
+        padding: 0 7rem; 
+    }
+}
+
+.logo-header {
+    margin-bottom: 2rem;
+    display: flex;
+    align-items: center;
+}
+
+.main-logo-text {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-main);
+    display: flex;
+    align-items: center;
+}
+
+.logo-plus {
+    color: var(--azul-principal);
+    font-size: 1.875rem;
+    margin-right: 0.25rem;
+}
+
+.logo-light {
+    font-weight: 300;
+}
+
+.form-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-main);
+    margin-bottom: 0.5rem;
+}
+
+@media (min-width: 1440px) {
+    .form-title {
+        font-size: 2.25rem;
+    }
+}
+
+.form-description {
+    font-size: 0.9rem;
+    color: var(--turques);
+    margin-bottom: 2rem;
+    line-height: 1.5;
+}
+
+@media (min-width: 1440px) {
+    .form-description {
+        font-size: 1.1rem;
+    }
+}
+
+.highlight-email {
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+/* Inputs OTP */
+.otp-input-group {
+    display: flex;
+    justify-content: center; 
+    gap: 0.5rem;
+    margin: 0 auto 2rem auto;
+    width: 100%;
+}
+
+.otp-input {
+    width: 2.8rem; 
+    height: 3.5rem; 
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 600;
+    border: 2px solid #E2E8F0; 
+    border-radius: 0.5rem;
+    background: #F8FAFC;
+    transition: all 0.2s ease;
+    color: var(--preto);
+}
+
+@media (min-width: 1440px) {
+    .otp-input {
+        width: 3.5rem; 
+        height: 4.5rem; 
+        font-size: 2rem;
+        gap: 0.75rem;
+    }
+}
+
+.otp-input:focus {
+    border-color: var(--azul-principal);
+    background: #fff;
+    outline: none;
+    transform: translateY(-2px); 
+    box-shadow: 0 4px 12px rgba(0, 167, 225, 0.2);
+}
+
+/* Botão Verificar */
+.verify-button {
+    width: 100%;
+    padding: 0.9rem;
+    background-color: var(--azul-principal);
+    color: var(--branco);
+    font-weight: 700;
+    font-size: 1rem;
+    border-radius: 0.5rem;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 1.5rem;
+    transition: background-color 0.3s, transform 0.1s;
+}
+
+@media (min-width: 1440px) {
+    .verify-button {
+        padding: 1.1rem;
+        font-size: 1.1rem;
+    }
+}
+
+.verify-button:hover {
+    background-color: var(--azul-escuro);
+}
+
+.verify-button:active {
+    transform: scale(0.98);
+}
+
+/* Link de Reenvio */
+.resend-text {
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--turques);
+}
+
+@media (min-width: 1440px) {
+    .resend-text {
+        font-size: 1rem;
+    }
+}
+
+.resend-text a {
+    font-weight: 700;
+    color: var(--azul-principal);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.resend-text a:hover {
+    text-decoration: underline;
+}
+
+.timer-display {
+    font-weight: 700;
+    color: var(--azul-principal);
+}
