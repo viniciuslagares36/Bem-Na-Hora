@@ -1,32 +1,34 @@
-from flask import Flask
-from flask_mail import Mail
+from flask import Flask, request, jsonify, send_from_directory
 import os
-from routes import *
-from routes import register_routes
-
 
 app = Flask(__name__)
 
-# --- CONFIG BASE ---
-app.secret_key = 'chave_super_secreta'
-app.config['UPLOAD_FOLDER'] = 'static/uploads'
-app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
+# Configurações do Flask-Mail (protegido)
+try:
+    from flask_mail import Mail
+    mail = Mail(app)
+except ImportError:
+    print("Flask-Mail não instalado")
+    mail = None
+except Exception as e:
+    print("Flask-Mail não inicializado:", e)
+    mail = None
 
-# --- CONFIG EMAIL ---
-app.config['MAIL_SERVER'] = 'smtp.gmail.com'
-app.config['MAIL_PORT'] = 587
-app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = 'BemNaHora.med@gmail.com'
-app.config['MAIL_PASSWORD'] = 'scsn yacx kwxp vtod' #essa é a senha para de trocar a porra da senha: scsn yacx kwxp vtod
-app.config['MAIL_DEFAULT_SENDER'] = 'BemNaHora.med@gmail.com'
+# Rota principal de teste
+@app.route("/")
+def home():
+    return "Bem Na Hora rodando! 🚀"
 
-mail = Mail(app)
+# Exemplo de rota de arquivos estáticos
+@app.route("/static/<path:filename>")
+def static_files(filename):
+    return send_from_directory("static", filename)
 
-# cria pasta upload
-os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+# Exemplo de rota de teste /ping
+@app.route("/ping")
+def ping():
+    return jsonify({"status": "pong"})
 
-# Importa rotas
-register_routes(app, mail)
-
-if __name__ == '__main__':
-    app.run(debug=True)
+# Iniciar o app com host/porta configurados para o Railway
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
