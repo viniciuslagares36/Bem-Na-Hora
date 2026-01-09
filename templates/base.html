@@ -1,0 +1,28 @@
+
+<!-- templates/base.html -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{% block title %}Bem Na Hora{% endblock %}</title>
+
+  <!-- CSS global (opcional) -->
+  {{ url_for(
+
+  <!-- CSS específico da página -->
+  {% if assets and assets.css %}
+    {% for css_path in assets.css %}
+      {{ url_for(
+    {% endfor %}
+  {% endif %}
+
+  {% block styles %}{% endblock %}
+</head>
+<body>
+  {% block content %}{% endblock %}
+
+  <!-- JS global (opcional) -->
+  {{ url_for(</script>
+
+  <!-- JS específico da página
