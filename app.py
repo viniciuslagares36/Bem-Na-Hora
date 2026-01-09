@@ -1,34 +1,18 @@
-from flask import Flask, request, jsonify, send_from_directory
+
+from flask import Flask, render_template
 import os
 
 app = Flask(__name__)
 
-# Configurações do Flask-Mail (protegido)
-try:
-    from flask_mail import Mail
-    mail = Mail(app)
-except ImportError:
-    print("Flask-Mail não instalado")
-    mail = None
-except Exception as e:
-    print("Flask-Mail não inicializado:", e)
-    mail = None
-
-# Rota principal de teste
 @app.route("/")
 def home():
-    return "Bem Na Hora rodando! 🚀"
+    # Se quiser, ainda pode passar variáveis como usuario_logado, tipo_usuario, etc.
+    return render_template("index.html")
 
-# Exemplo de rota de arquivos estáticos
-@app.route("/static/<path:filename>")
-def static_files(filename):
-    return send_from_directory("static", filename)
+# health opcional
+@app.get("/health")
+def health():
+    return {"status": "ok"}, 200
 
-# Exemplo de rota de teste /ping
-@app.route("/ping")
-def ping():
-    return jsonify({"status": "pong"})
-
-# Iniciar o app com host/porta configurados para o Railway
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
